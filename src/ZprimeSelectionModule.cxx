@@ -92,6 +92,8 @@ class ZprimeSelectionModule : public uhh2::AnalysisModule {
   std::unique_ptr<uhh2::Selection> triangc_sel;
   std::unique_ptr<uhh2::Selection> toptagevt_sel;
 
+
+
   // ttbar reconstruction
   std::unique_ptr<uhh2::AnalysisModule> ttgenprod;
   std::unique_ptr<uhh2::Selection> genmttbar_sel;
@@ -114,6 +116,8 @@ class ZprimeSelectionModule : public uhh2::AnalysisModule {
   std::unique_ptr<uhh2::Hists> toptagevt_h;
   std::unique_ptr<uhh2::Hists> chi2min_toptag0_h;
   std::unique_ptr<uhh2::Hists> chi2min_toptag1_h;
+
+  bool blind_DATA_;
 };
 
 ZprimeSelectionModule::ZprimeSelectionModule(uhh2::Context& ctx){
@@ -124,6 +128,11 @@ ZprimeSelectionModule::ZprimeSelectionModule(uhh2::Context& ctx){
   else throw std::runtime_error("ZprimeSelectionModule -- undefined argument for 'channel' key in xml file (must be 'muon' or 'elec'): "+channel);
 
   const bool isMC = (ctx.get("dataset_type") == "MC");
+  blind_DATA_ = false;
+  if     (ctx.get("blind_DATA") == "true")  blind_DATA_ = true && !isMC;
+  else if(ctx.get("blind_DATA") == "false") blind_DATA_ = false;
+  else throw std::runtime_error("undefined argument for 'blind_DATA' key in xml file (must be 'true' or 'false')");
+
 
   //// COMMON MODULES
   if(isMC) pileup_SF.reset(new MCPileupReweight(ctx));
@@ -137,7 +146,8 @@ ZprimeSelectionModule::ZprimeSelectionModule(uhh2::Context& ctx){
 
   //// OBJ CLEANING
   muo_cleaner.reset(new MuonCleaner    (AndId<Muon>    (PtEtaCut  (50., 2.1), MuonIDMedium())));
-  ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(PtEtaSCCut(50., 2.5), ElectronID_MVAnotrig_Spring15_25ns_loose)));
+  //  ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(PtEtaSCCut(50., 2.5), ElectronID_MVAnotrig_Spring15_25ns_loose)));
+  ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(PtEtaSCCut(50., 2.5), ElectronID_MVAnotrig_Spring15_25ns_tight))); //TEST tight MVA cut
 
   const JetId jetID(JetPFID(JetPFID::WP_LOOSE));
 
@@ -195,9 +205,10 @@ ZprimeSelectionModule::ZprimeSelectionModule(uhh2::Context& ctx){
   met_sel  .reset(new METCut  ( 50., uhh2::infinity));
   htlep_sel.reset(new HTlepCut(150., uhh2::infinity));
 
-  twodcut_sel.reset(new TwoDCut(.4, 25.));
+  twodcut_sel.reset(new TwoDCut(.4, 20.));
 
-  if     (channel_ == elec) triangc_sel.reset(new TriangularCuts(1.5, 75.));
+  // if     (channel_ == elec) triangc_sel.reset(new TriangularCuts(1.5, 75.));
+  if     (channel_ == elec) triangc_sel.reset(new uhh2::AndSelection(ctx)); //TEST
   else if(channel_ == muon) triangc_sel.reset(new uhh2::AndSelection(ctx)); // always true (no triangular cuts for muon channel)
 
   /* t-tagging */
@@ -271,7 +282,7 @@ bool ZprimeSelectionModule::process(uhh2::Event& event){
   muo_cleaner->process(event);
   sort_by_pt<Muon>(*event.muons);
 
-  ele_cleaner->process(event);
+  // ele_cleaner->process(event); TEST: no MVA
   sort_by_pt<Electron>(*event.electrons);
 
   jet_IDcleaner->process(event);
@@ -289,8 +300,9 @@ bool ZprimeSelectionModule::process(uhh2::Event& event){
   sort_by_pt<TopJet>(*event.topjets);
 
   //// HLT selection
-  const bool pass_trigger = trigger_sel->passes(event);
-  if(!pass_trigger) return false;
+  //TEST: FOR QCD MC = don't use trigger
+  //  const bool pass_trigger = trigger_sel->passes(event);
+  // if(!pass_trigger) return false; 
   trigger_h->fill(event);
   ////
 
@@ -302,9 +314,7 @@ bool ZprimeSelectionModule::process(uhh2::Event& event){
 
   //// JET selection
 
-  /* lepton-2Dcut boolean */
-  const bool pass_twodcut = twodcut_sel->passes(event);
-
+  
   jet_cleaner2->process(event);
   sort_by_pt<Jet>(*event.jets);
 
@@ -331,13 +341,15 @@ bool ZprimeSelectionModule::process(uhh2::Event& event){
   ////
 
   //// LEPTON-2Dcut selection
-  if(!pass_twodcut) return false;
+/* lepton-2Dcut boolean */
+//   const bool pass_twodcut = twodcut_sel->passes(event); //TEST: QCD for MVA 
+  // if(!pass_twodcut) return false; //TEST: QCD for MVA
   twodcut_h->fill(event);
   ////
 
   //// TRIANGULAR-CUTS selection [e+jets only]
-  const bool pass_triangc = triangc_sel->passes(event);
-  if(!pass_triangc) return false;
+  //const bool pass_triangc = triangc_sel->passes(event);
+  //if(!pass_triangc) return false; //TEST: QCD for MVA 
   triangc_h->fill(event);
   ////
 
@@ -351,6 +363,9 @@ bool ZprimeSelectionModule::process(uhh2::Event& event){
 
   //// TTBAR KIN RECO
   reco_primlep->process(event);
+
+  /*****************/
+
   if(!pass_ttagevt){ ttbar_reco__ttag0->process(event); ttbar_chi2__ttag0->process(event); }
   else             { ttbar_reco__ttag1->process(event); ttbar_chi2__ttag1->process(event); }
   ////
@@ -358,10 +373,20 @@ bool ZprimeSelectionModule::process(uhh2::Event& event){
   if(!pass_ttagevt) chi2min_toptag0_h->fill(event);
   else              chi2min_toptag1_h->fill(event);
 
+
+  
+
+
   // save only the chi2-best ttbar hypothesis in output sub-ntuple
   std::vector<ReconstructionHypothesis>& hyps = event.get(h_ttbar_hyps);
   const ReconstructionHypothesis* hyp = get_best_hypothesis(hyps, "Chi2");
   if(!hyp) std::runtime_error("ZprimeSelectionModule::process -- best hypothesis for ttbar-reconstruction not found");
+  /* DATA blinding */
+  if(blind_DATA_){
+    const float rec_ttbar_M((hyp->top_v4()+hyp->antitop_v4()).M());
+    if(!( rec_ttbar_M < 2000. )) return false;
+  }
+
 
   const ReconstructionHypothesis hyp_obj(*hyp);
 

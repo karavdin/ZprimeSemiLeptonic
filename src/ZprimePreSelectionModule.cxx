@@ -76,7 +76,8 @@ ZprimePreSelectionModule::ZprimePreSelectionModule(uhh2::Context& ctx){
 
   // set up object cleaners
   muo_cleaner.reset(new MuonCleaner    (AndId<Muon>    (PtEtaCut  (50., 2.1), MuonIDMedium())));
-  ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(PtEtaSCCut(50., 2.5), ElectronID_MVAnotrig_Spring15_25ns_loose)));
+  //  ele_cleaner.reset(new ElectronCleaner(AndId<Electron>(PtEtaSCCut(50., 2.5), ElectronID_MVAnotrig_Spring15_25ns_loose)));
+  ele_cleaner.reset(new ElectronCleaner(PtEtaSCCut(20., 3.0)));//TEST
 
   std::vector<std::string> JEC_AK4, JEC_AK8;
   if(isMC){
@@ -124,6 +125,7 @@ ZprimePreSelectionModule::ZprimePreSelectionModule(uhh2::Context& ctx){
 
 bool ZprimePreSelectionModule::process(Event & event) {
 
+  // std::cout<<"TEST: ZprimePreSelectionModule::process "<<std::endl;
   // dump input content
   input_h_event ->fill(event);
   input_h_muo   ->fill(event);
@@ -133,7 +135,7 @@ bool ZprimePreSelectionModule::process(Event & event) {
 
   // LEPTON CLEANING
   muo_cleaner->process(event);
-  ele_cleaner->process(event);
+  ele_cleaner->process(event); //TEST: NO MVA!
 
   // LEPTON PRE-SELECTION
   bool pass_lep(false);
@@ -160,6 +162,7 @@ bool ZprimePreSelectionModule::process(Event & event) {
 
   // JET PRE-SELECTION
   const bool pass_jet = jet2_sel->passes(event) || (jet1_sel->passes(event) && topjet1_sel->passes(event));
+  //const bool pass_jet = (jet2_sel->passes(event) && topjet1_sel->passes(event));//TEST for W+jets
 
   // exit if jet preselection fails
   if(!pass_jet) return false;

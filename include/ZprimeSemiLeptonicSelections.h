@@ -157,4 +157,53 @@ namespace uhh2 {
   };
   /////
 
+  class CutA : public Selection {                                                                                         
+  public:                                                                                                                             
+    explicit CutA(float, float, float);                                                                                          
+    virtual bool passes(const Event&) override;                                                                                        
+                                                                                                                                      
+  private:                                                                                                                            
+    float a_, b_, c_;                                                                                                                      
+  };                                                                                                                                   
+  /////
+  class CutB : public Selection {                                                                                                      
+  public:                                                                                                                              
+    explicit CutB(float, float);                                                                                                
+    virtual bool passes(const Event&) override;                                                                                       \
+                                                                                                                                       
+                                                                                                                                       
+  private:                                                                                                                             
+    float a_, b_;                                                                                                                 \
+                                                                                                                                       
+  };                                                   
+  /////        
+
+
+  class CutC : public Selection {                                                                                                      
+  public:                                                                                                                              
+    explicit CutC(float, float, float);                                                                                                
+    virtual bool passes(const Event&) override;
+                                                                                                                                       
+  private:                                                                                                                             
+    float a_, b_, c_;                                                                                                                                                                                                                                                      
+  };                                                                                                                                  
+                                                                                                                                      
+  /////
+
+
+  class CutD : public Selection {                                                                                                     \
+                                                                                                                                       
+  public:                                                                                                                             \
+                                                                
+    explicit CutD(float, float);
+                                                                                                                                       
+    virtual bool passes(const Event&) override;                                                                                        
+                                                                                                                                      \
+                                                                                                                                       
+  private:
+    float a_, b_;                                                                                                                 \
+                                                                                                                                       
+  };                                                                                                                                   
+                                                                                                                                       
+  /////        
 }

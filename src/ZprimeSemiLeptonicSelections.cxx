@@ -96,7 +96,7 @@ bool uhh2::TwoDCut::passes(const uhh2::Event& event){
   float drmin, ptrel;  
   if(event.muons->size()) std::tie(drmin, ptrel) = drmin_pTrel(event.muons->at(0), *event.jets);
   else std::tie(drmin, ptrel) = drmin_pTrel(event.electrons->at(0), *event.jets);
-
+  std::cout<<"drmin = "<<drmin<<" return = "<<((drmin > min_deltaR_) || (ptrel > min_pTrel_))<<std::endl;
   return (drmin > min_deltaR_) || (ptrel > min_pTrel_);
 }
 ////////////////////////////////////////////////////////
@@ -261,3 +261,111 @@ bool uhh2::GenMttbarCut::passes(const uhh2::Event& event){
   return (mttbar_min_ < mttbargen) && (mttbargen < mttbar_max_);
 }
 ////////////////////////////////////////////////////////
+
+uhh2::CutA::CutA(float a, float b, float c): a_(a), b_(b),c_(c) {
+
+  if(!c_) std::runtime_error("CutA -- incorrect initialization (parameter 'c' is null)");
+}
+
+bool uhh2::CutA::passes(const uhh2::Event& event){
+
+  assert(event.electrons);
+  assert(event.jets && event.met);
+
+  if(event.electrons->size() != 1) std::runtime_error("CutA::passes -- unexpected number of electrons in the event (!=1)");
+  if(event.jets     ->size() == 0) std::runtime_error("CutA::passes -- unexpected number of jets in the event (==0)");
+
+  // pt-leading charged lepton
+  const Particle* lep = &event.electrons->at(0);
+  // find jet with smallest angle to lepton (the closest jet to lepton)                                                               
+  double ang_min = 1e7;
+  int jet_pos = 0;                  
+  for(unsigned int i=0; i<event.jets->size(); i++){                                               
+    const Particle* jeti =  &event.jets->at(i);  
+    double ang_current = fabs(uhh2::deltaPhi(*lep, *jeti));                                                                            
+    if(ang_min>ang_current){                        
+      ang_min = ang_current;                                                                                       
+      jet_pos = i;                                                                         
+    }                                                                                                                   
+  }                                                                                                                                     
+  const Particle* jet0 =  &event.jets->at(jet_pos);
+  bool pass_phi = fabs(uhh2::deltaPhi(*lep, *jet0)) < a_;
+  bool pass_eta = b_ < fabs(lep->eta()) && fabs(lep->eta()) < c_;
+  return !(pass_phi && pass_eta);
+
+}
+////////////////////////////////////////////////////////
+
+uhh2::CutB::CutB(float a, float b): a_(a), b_(b) {                                                                      
+                                                                                                                                      
+  if(!b_) std::runtime_error("CutB -- incorrect initialization (parameter 'b' is null)");                                              
+}   
+
+bool uhh2::CutB::passes(const uhh2::Event& event){                                                                                     
+                                                                                                                                       
+  assert(event.electrons);                                                                                                             
+  assert(event.jets && event.met);                                                                                                     
+                                                                                                                                       
+  if(event.electrons->size() != 1) std::runtime_error("CutB::passes -- unexpected number of electrons in the event (!=1)");            
+  if(event.jets     ->size() == 0) std::runtime_error("CutB::passes -- unexpected number of jets in the event (==0)");
+
+  bool pass_met = event.met->pt() < a_; 
+  const Particle* lep = &event.electrons->at(0);  
+  bool pass_lepPt = lep->pt() > b_;
+  return !(pass_met && pass_lepPt);
+}
+
+uhh2::CutC::CutC(float a, float b, float c): a_(a), b_(b),c_(c) {                                                                      
+                                                                                                                                     
+  if(!c_) std::runtime_error("CutC -- incorrect initialization (parameter 'c' is null)");                                              
+}   
+
+
+bool uhh2::CutC::passes(const uhh2::Event& event){                                                                                    
+  assert(event.electrons);
+  assert(event.jets && event.met);
+  if(event.electrons->size() != 1) std::runtime_error("CutC::passes -- unexpected number of electrons in the event (!=1)");
+  if(event.jets     ->size() == 0) std::runtime_error("CutC::passes -- unexpected number of jets in the event (==0)");                
+  const Particle* lep = &event.electrons->at(0);                                                                                       
+  const Particle* jet1 = &event.jets->at(0); //leading jet                                                                                       
+  bool pass_ang = fabs(deltaPhi(*lep, *jet1)) < a_;
+  bool pass_ljetPt = (b_ < jet1->pt()) &&  (jet1->pt() < c_);                                                                                                    
+  return !(pass_ang && pass_ljetPt);                                                                                                    
+}   
+    
+uhh2::CutD::CutD(float a, float b): a_(a), b_(b) {
+                                                                       
+if(!b_) std::runtime_error("CutD -- incorrect initialization (parameter 'b' is null)");
+
+}
+   
+bool uhh2::CutD::passes(const uhh2::Event& event){
+  assert(event.electrons);                                                                                                             
+  assert(event.jets && event.met);                                                                                                     
+                                                                                                                                
+  if(event.electrons->size() != 1) std::runtime_error("CutD::passes -- unexpected number of electrons in the event (!=1)");            
+  if(event.jets     ->size() == 0) std::runtime_error("CutD::passes -- unexpected number of jets in the event (==0)");              
+  
+  // pt-leading charged lepton                                                                                                         
+  const Particle* lep = &event.electrons->at(0);                                                        
+  
+  // find jet with smallest angle to lepton (the closest jet to lepton)
+  double ang_min = 1e7;                                                                                                        
+  int jet_pos = 0;                                                                                                           
+  for(unsigned int i=0; i<event.jets->size(); i++){                                                                       
+    const Particle* jeti =  &event.jets->at(i);                                                                         
+    double ang_current = fabs(uhh2::deltaPhi(*lep, *jeti));                                                       
+    if(ang_min>ang_current){                                                                                        
+      ang_min = ang_current;                                                                                        
+      jet_pos = i;                                                                                                  
+    }                                                                                                                             
+  }                                
+  const Particle* jet0 =  &event.jets->at(jet_pos);
+  bool pass_phi0 = fabs(uhh2::deltaPhi(*lep, *jet0)) < a_;                                 
+  
+  const Particle* jet1 =  &event.jets->at(0);  
+  bool pass_phi1 = fabs(uhh2::deltaPhi(*lep, *jet1)) < b_;                           
+  return !(pass_phi0 && pass_phi1);                                                                                                                                                  
+                                         
+}                                                                                                                                      
+//////////////////////////////////////////////////////// 
