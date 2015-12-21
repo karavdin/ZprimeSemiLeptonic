@@ -1,5 +1,6 @@
 #include <UHH2/ZprimeSemiLeptonic/include/ZprimeSemiLeptonicUtils.h>
 #include <UHH2/core/include/LorentzVector.h>
+#include <UHH2/common/include/Utils.h>
 
 bool JetLeptonDeltaRCleaner::process(uhh2::Event& event){
 
@@ -62,12 +63,33 @@ bool TopJetLeptonDeltaRCleaner::process(uhh2::Event& event){
 }
 
 const Particle* leading_lepton(const uhh2::Event& event){
+  // if(event.muons){
+  //   sort_by_pt<Muon>(*event.muons);
+  //   const Particle* lep = &event.muons->at(0);
+  //   return lep;
+  // }
+  // if(event.electrons){
+  //   sort_by_pt<Electron>(*event.electrons);
+  //   const Particle* lep = &event.electrons->at(0);
+  //   return lep;
+  // }
 
   const Particle* lep(0);
 
   float ptL_max(0.);
-  if(event.muons)    { for(const auto& mu : *event.muons)    { if(mu.pt() > ptL_max){ ptL_max = mu.pt(); lep = &mu; } } }
-  if(event.electrons){ for(const auto& el : *event.electrons){ if(el.pt() > ptL_max){ ptL_max = el.pt(); lep = &el; } } }
+  if(event.muons)    { 
+    for(const auto& mu : *event.muons)    { 
+      if(mu.pt() > ptL_max){ ptL_max = mu.pt(); lep = &mu; 
+      } 
+    } 
+  }
+  if(event.electrons){ 
+    for(const auto& el : *event.electrons){ 
+      if(el.pt() > ptL_max){ 
+  	ptL_max = el.pt(); lep = &el; 
+      } 
+    } 
+  }
 
   if(!lep) throw std::runtime_error("leading_lepton -- pt-leading lepton not found");
 

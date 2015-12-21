@@ -26,7 +26,7 @@ void TTbarLJHists::init(){
   // PV
   book_TH1F("pvN", 120, 0, 120);
 
-  // MUON
+  /* // MUON
   book_TH1F("muoN"                 , 20, 0, 20);
 
   book_TH1F("muo1__charge"         , 5, -2, 3);
@@ -55,7 +55,7 @@ void TTbarLJHists::init(){
   book_TH1F("muo2__minDR_topjet"   , 60, 0, 6);
   book_TH2F("muo2__minDR_jet__vs__muo2__pTrel_jet", 60, 0, 6, 100, 0, 500);
   book_TH2F("muo2__pt__vs__met__pt", 360, 0, 1800, 180, 0, 1800);
-  book_TH2F("muo2__pTrel_jet__vs__met__pt", 100, 0, 500, 180, 0, 1800);
+  book_TH2F("muo2__pTrel_jet__vs__met__pt", 100, 0, 500, 180, 0, 1800); */
 
   // ELECTRON
   book_TH1F("eleN"                 , 20, 0, 20);
@@ -89,6 +89,78 @@ void TTbarLJHists::init(){
   book_TH2F("ele2__minDR_jet__vs__ele2__pTrel_jet", 60, 0, 6, 100, 0, 500);
   book_TH2F("ele2__pt__vs__met__pt", 360, 0, 1800, 180, 0, 1800);
   book_TH2F("ele2__pTrel_jet__vs__met__pt", 100, 0, 500, 180, 0, 1800);
+
+
+  //electrons classified according to CMS-EGM-13-001
+  book_TH1F("ele1__eta_Gold",180,-3,3);
+  book_TH1F("ele1__eta_BigBrem",180,-3,3);
+  book_TH1F("ele1__eta_Shower",180,-3,3);
+  book_TH1F("ele1__eta_BadTrk",180,-3,3);
+  book_TH1F("ele1__eta_Gap",180,-3,3);
+  book_TH1F("ele1__eta_Unknown",180,-3,3);
+
+  book_TH1F("ele2__eta_Gold",180,-3,3);
+  book_TH1F("ele2__eta_BigBrem",180,-3,3);
+  book_TH1F("ele2__eta_Shower",180,-3,3);
+  book_TH1F("ele2__eta_BadTrk",180,-3,3);
+  book_TH1F("ele2__eta_Gap",180,-3,3);
+  book_TH1F("ele2__eta_Unknown",180,-3,3);
+
+  book_TH1F("ele1__N_SCclusters",10,0,10);//Number of clusters in Super Cluster
+  book_TH1F("ele2__N_SCclusters",10,0,10);
+
+  //For MVA electron ID check
+  book_TH2F("ele1__eta_mvaNonTrigV0", 180, -3, 3, 20,0,1);
+  book_TH2F("ele1__pt_mvaNonTrigV0", 80, 0, 800, 20,0,1);
+  book_TH2F("ele1__eta_mvaTrigV0", 180, -3, 3, 20,0,1);
+  book_TH2F("ele1__pt_mvaTrigV0", 80, 0, 800, 20,0,1);
+
+  book_TH2F("ele2__eta_mvaNonTrigV0", 180, -3, 3, 20,0,1);
+  book_TH2F("ele2__pt_mvaNonTrigV0", 80, 0, 800, 20,0,1);
+  book_TH2F("ele2__eta_mvaTrigV0", 180, -3, 3, 20,0,1);
+  book_TH2F("ele2__pt_mvaTrigV0", 80, 0, 800, 20,0,1);
+
+  //For HEEP electron ID check
+  book_TH2F("ele1__eta_HEEP",180, -3, 3, 20,0,1); //standart HEEP tag (with isolation cuts)
+  book_TH2F("ele1__pt_HEEP",80, 0, 800, 20,0,1);//standart HEEP tag (with isolation cuts)
+
+  book_TH2F("ele2__eta_HEEP",180, -3, 3, 20,0,1); //standart HEEP tag (with isolation cuts)
+  book_TH2F("ele2__pt_HEEP",80, 0, 800, 20,0,1);//standart HEEP tag (with isolation cuts)
+
+  //VARs for HEEP electron ID w/t isolation cuts
+  book_TH1F("ele1__isEcalDriven",3,0,2);
+  book_TH1F("ele1__dxy",100,-10,10);
+  book_TH1F("ele1__dEtaInSeed",180,-3,3);
+  //ToDo: change to ratio of values as used in HEEP!
+  book_TH1F("ele1__full5x5_e1x5",1000,0,1000);
+  book_TH1F("ele1__full5x5_e5x5",1000,0,1000);
+  book_TH1F("ele1__full5x5_e2x5Max",1000,0,1000);
+
+  book_TH1F("ele2__isEcalDriven",3,0,2);
+  book_TH1F("ele2__dxy",100,-10,10);
+  book_TH1F("ele2__dEtaInSeed",180,-3,3);
+  book_TH1F("ele2__full5x5_e1x5",1000,0,1000);
+  book_TH1F("ele2__full5x5_e5x5",1000,0,1000);
+  book_TH1F("ele2__full5x5_e2x5Max",1000,0,1000);
+
+  book_TH2F("ele1__pt_eta",40, 0, 800,60, -3, 3);
+  book_TH2F("ele2__pt_eta",40, 0, 800,60, -3, 3);
+
+
+  //vars planned to be used in Homemade MVA for QCD suppression
+  lep__fbrem = book<TH1F>("lep__fbrem", "lep fbrem;lep fbrem", 40, -1, 1);
+  lep__DR_jet0 = book<TH1F>("ele__DR_jet0", "#DeltaR(e, jet0);#DeltaR(e, jet0)", 80, 0, 4.);
+  jet0__DR_jet1 = book<TH1F>("jet0__DR_jet1", "#DeltaR(jet0, jet1);#DeltaR(jet0, jet1)", 80, 0, 4.);
+  met__DPhi_lep = book<TH1F>("met__DPhi_lep", "#Delta#phi(MET, lep);#Delta#phi(MET, lep)", 30, 0, 3.15);
+  lep__pTrel_jet1 = book<TH1F>("lep__pTrel_jet1", "p_{T, rel}(lep, jet1);p_{T, rel}(lep, jet1)", 50, 0, 100);
+ 
+  Mt__lep_met = book<TH1F>("Mt__lep_met", "M_{T}(lep,MET) [GeV];M_{T}(lep,MET) [GeV]", 50, 0, 1000);
+
+  logmet__pt = book<TH1F>("logmet__pt", "Log(MET) ;Log(MET)", 50, 0, 10);
+  logjet1__pt = book<TH1F>("logjet1__pt", "Log(jet1 p_{T}); Log(jet1 p_{T})", 50, 0, 10);
+  logele1__pt = book<TH1F>("logele1__pt", "Log(electron p_{T});Log(electron p_{T})", 50, 0, 10);
+  lep__vtxXY = book<TH1F>("lep__vtxXY", "lep vtx #sqrt{(x+x_{0})^{2}+(y+y_{0})^{2}} [cm];lep vtx #sqrt{x^{2}+y^{2}}[cm]", 80, 0, 0.2);
+  lep__vtxXY_trans = book<TH1F>("lep__vtxXY_trans", "log(|#sqrt{(x+x_{0})^{2}+(y+y_{0})^{2}}-R_{0}|);log(|#sqrt{(x+x_{0})^{2}+(y+y_{0})^{2}}-R_{0}|)", 150, -10, 5);
 
   // JET
   book_TH1F("jetN"              , 20, 0, 20);
@@ -191,7 +263,7 @@ void TTbarLJHists::fill(const uhh2::Event& event){
   // PV
   H1("pvN")->Fill(event.pvs->size(), weight);
 
-  // MUON
+  /* // MUON
   const int muoN(event.muons->size());
   H1("muoN")->Fill(muoN, weight);
 
@@ -234,7 +306,7 @@ void TTbarLJHists::fill(const uhh2::Event& event){
 
     H1("muo"+std::to_string(i+1)+"__minDR_topjet")->Fill(minDR_topjet, weight);
   }
-
+  */
   // ELECTRON
   const int eleN(event.electrons->size());
   H1("eleN")->Fill(eleN, weight);
@@ -250,6 +322,7 @@ void TTbarLJHists::fill(const uhh2::Event& event){
     H1("ele"+std::to_string(i+1)+"__phi")   ->Fill(p.phi()             , weight);
 
     H2("ele"+std::to_string(i+1)+"__pt__vs__met__pt")->Fill(p.pt(), event.met->pt(), weight);
+    H2("ele"+std::to_string(i+1)+"__pt_eta")->Fill(p.pt(), p.eta(), weight);
 
     const float pfR030Iso_dbeta = p.relIsodb();
     const float pfMINIIso_dbeta = util::pfMINIIso(p, "delta-beta");
@@ -278,7 +351,75 @@ void TTbarLJHists::fill(const uhh2::Event& event){
     }
 
     H1("ele"+std::to_string(i+1)+"__minDR_topjet")->Fill(minDR_topjet, weight);
+
+    H2("ele"+std::to_string(i+1)+"__eta_mvaNonTrigV0")->Fill(p.eta(), p.mvaNonTrigV0(), weight);
+    H2("ele"+std::to_string(i+1)+"__pt_mvaNonTrigV0")->Fill(p.pt(), p.mvaNonTrigV0(), weight);
+    H2("ele"+std::to_string(i+1)+"__eta_mvaTrigV0")->Fill(p.eta(), p.mvaTrigV0(), weight);
+    H2("ele"+std::to_string(i+1)+"__pt_mvaTrigV0")->Fill(p.pt(), p.mvaTrigV0(), weight);
+
+    H2("ele"+std::to_string(i+1)+"__eta_HEEP")->Fill(p.eta(), p.get_tag(p.tagname2tag("heepElectronID_HEEPV60")), weight);
+    H2("ele"+std::to_string(i+1)+"__pt_HEEP")->Fill(p.pt(), p.get_tag(p.tagname2tag("heepElectronID_HEEPV60")), weight);
+
+    /* new vars in ntuples
+    int EMclass= p.Class();
+    if(EMclass==-1) H1("ele"+std::to_string(i+1)+"__eta_Unknown")->Fill(p.eta(), weight);
+    if(EMclass==0) H1("ele"+std::to_string(i+1)+"__eta_Gold")->Fill(p.eta(), weight);
+    if(EMclass==1) H1("ele"+std::to_string(i+1)+"__eta_BigBrem")->Fill(p.eta(), weight);
+    if(EMclass==2) H1("ele"+std::to_string(i+1)+"__eta_BadTrk")->Fill(p.eta(), weight);
+    if(EMclass==3) H1("ele"+std::to_string(i+1)+"__eta_Shower")->Fill(p.eta(), weight);
+    if(EMclass==4) H1("ele"+std::to_string(i+1)+"__eta_Gap")->Fill(p.eta(), weight);
+    H1("ele"+std::to_string(i+1)+"__N_SCclusters")->Fill(p.Nclusters(),weight);
+
+    H1("ele"+std::to_string(i+1)+"__isEcalDriven")->Fill(p.isEcalDriven(),weight);
+    H1("ele"+std::to_string(i+1)+"__dxy")->Fill(p.dxy(),weight);
+    H1("ele"+std::to_string(i+1)+"__dEtaInSeed")->Fill(p.dEtaInSeed(),weight);
+    H1("ele"+std::to_string(i+1)+"__full5x5_e1x5")->Fill(p.full5x5_e1x5(),weight);
+    H1("ele"+std::to_string(i+1)+"__full5x5_e5x5")->Fill(p.full5x5_e5x5(),weight);
+    H1("ele"+std::to_string(i+1)+"__full5x5_e2x5Max")->Fill(p.full5x5_e2x5Max(),weight); */
   }
+  if(eleN>0){
+    const Particle *lep = &event.electrons->at(0);//ToDo: extend for case with muon(s)  in final state;
+   lep__fbrem->Fill((event.electrons->at(0)).fbrem(), weight);
+   //lep__vtxXY->Fill(hypot((event.electrons->at(0)).gsfTrack_vx(),(event.electrons->at(0)).gsfTrack_vy()), weight);
+   if(!event.isRealData){ 
+ //TEST: shift for agreement with DATA (RunII, 0.6 pb^-1)
+      lep__vtxXY->Fill(hypot((event.electrons->at(0)).gsfTrack_vx()+0.04309,(event.electrons->at(0)).gsfTrack_vy()+0.09364),weight); 
+      // acos_lep__vtxXY->Fill((((event.electrons->at(0)).gsfTrack_vx()+0.046)/hypot((event.electrons->at(0)).gsfTrack_vx()+0.046,(event.electrons->at(0)).gsfTrack_vy()+0.094)),weight); 
+      lep__vtxXY_trans->Fill(log(fabs(hypot((event.electrons->at(0)).gsfTrack_vx()+0.04309,(event.electrons->at(0)).gsfTrack_vy()+0.09364)-0.1216)), weight);
+    }
+    else{
+      lep__vtxXY->Fill(hypot((event.electrons->at(0)).gsfTrack_vx(),(event.electrons->at(0)).gsfTrack_vy()), weight);
+      lep__vtxXY_trans->Fill(log(fabs(hypot((event.electrons->at(0)).gsfTrack_vx(),(event.electrons->at(0)).gsfTrack_vy())-0.1216)), weight);
+      
+   }
+   //the closest to lepton jet
+   // find jet with smallest angle to lepton (the closest jet to lepton)
+   int jet_pos = 0;
+   double dR_lep_cljet = 1e7;
+   int jet_n(event.jets->size());
+   for(int i=1; i<jet_n; i++){//skip leading jet
+     const Particle* jeti =  &event.jets->at(i);
+     float dR_current = uhh2::deltaR(*lep, *jeti);
+     if(dR_lep_cljet>dR_current){// min distance in eta-phi
+       dR_lep_cljet = dR_current;      
+       jet_pos = i;
+     }
+   }
+
+   lep__DR_jet0->Fill(dR_lep_cljet, weight);
+   const Particle*  jet =  &event.jets->at(jet_pos);    
+   const Particle*  jet1 =  &event.jets->at(0); 
+   jet0__DR_jet1->Fill(uhh2::deltaR(*jet, *jet1), weight);
+
+ 
+   float dPhi_met_lep = fabs(uhh2::deltaPhi(*event.met, *lep));
+   met__DPhi_lep->Fill(dPhi_met_lep, weight);
+   lep__pTrel_jet1->Fill(pTrel(*lep, jet1), weight);
+   
+   float MwT = sqrt(2*fabs(lep->pt())*fabs(event.met->pt())*(1-cos(dPhi_met_lep)));
+   Mt__lep_met->Fill(MwT, weight);
+  }
+
 
   // JET
   int jetN(event.jets->size());

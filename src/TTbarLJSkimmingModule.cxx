@@ -85,14 +85,16 @@ TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
   if(keyword == "v01"){
 
     ele_pt = 50.;
-    eleID  = ElectronID_Spring15_25ns_tight_noIso;
-
+    // ele_pt = 40.;
+    //    eleID  = ElectronID_Spring15_25ns_tight_noIso;
+    //  eleID  = ElectronID_HEEP_RunII_25ns;
+    eleID = ElectronID_MVAnotrig_Spring15_25ns_loose;
     use_miniiso = false;
 
-    jet1_pt = 150.;
+    jet1_pt = 200.;
     jet2_pt =  50.;
 
-    MET     =  50.;
+    MET     =  0.;
     HT_lep  =   0.;
   }
   else throw std::runtime_error("TTbarLJSkimmingModule::TTbarLJSkimmingModule -- undefined \"keyword\" argument in .xml configuration file: "+keyword);
@@ -136,6 +138,7 @@ TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
   //// OBJ CLEANING
   const     MuonId muoSR(AndId<Muon>    (PtEtaCut  (50.   , 2.1), MuonIDMedium()));
   const ElectronId eleSR(AndId<Electron>(PtEtaSCCut(ele_pt, 2.5), eleID));
+  //  const ElectronId eleSR(PtEtaSCCut(ele_pt,2.5)); //TEST: ID methods study
 
   if(use_miniiso){
 
@@ -210,6 +213,8 @@ TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
 }
 
 bool TTbarLJSkimmingModule::process(uhh2::Event& event){
+  // std::cout<<""<<std::endl;
+  // std::cout<<"New event! "<<std::endl;
 
   //// COMMON MODULES
 
@@ -223,8 +228,10 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
     if(!genflavor_sel->passes(event)) return false;
   }
 
+
   /* luminosity sections from CMS JSON file */
   if(event.isRealData && !lumi_sel->passes(event)) return false;
+
 
   /* MET filters */
   if(!metfilters_sel->passes(event)) return false;
@@ -232,14 +239,17 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
   ////
 
   //// LEPTON selection
+  
   muoSR_cleaner->process(event);
   sort_by_pt<Muon>(*event.muons);
+  // std::cout<<"event.muons->size() = "<<event.muons->size()<<std::endl;
 
   eleSR_cleaner->process(event);
   sort_by_pt<Electron>(*event.electrons);
-
+  //  std::cout<<"event.electrons->size() = "<<event.electrons->size()<<std::endl;
   const bool pass_lep1 = ((event.muons->size() >= 1) || (event.electrons->size() >= 1));
   if(!pass_lep1) return false;
+  //std::cout<<"Electrons are sorted!"<<std::endl;
   HFolder("lep1")->fill(event);
   ////
 
@@ -251,6 +261,7 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
   jetlepton_cleaner->process(event);
   jet_cleaner1->process(event);
   sort_by_pt<Jet>(*event.jets);
+  // std::cout<<"Jets are sorted!"<<std::endl;
 
   topjet_IDcleaner->process(event);
   topjet_corrector->process(event);
@@ -258,8 +269,44 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
   topjetlepton_cleaner->process(event);
   topjet_cleaner->process(event);
   sort_by_pt<TopJet>(*event.topjets);
+  // std::cout<<"TopJets are sorted!"<<std::endl;
 
-  /* lepton-2Dcut variables */
+ 
+
+  jet_cleaner2->process(event);
+  sort_by_pt<Jet>(*event.jets);
+  // std::cout<<"Jets are sorted again! "<<event.jets->size()<<std::endl;
+
+  /* 2nd AK4 jet selection */
+  const bool pass_jet2 = jet2_sel->passes(event);
+  if(!pass_jet2) return false;
+  HFolder("jet2")->fill(event);
+  // std::cout<<"pass_jet2!"<<std::endl;
+
+  /* 1st AK4 jet selection */
+  const bool pass_jet1 = jet1_sel->passes(event);
+  if(!pass_jet1) return false;
+  HFolder("jet1")->fill(event);
+  ////
+  // std::cout<<"pass_jet1!"<<std::endl;
+
+  //// MET selection
+  const bool pass_met = met_sel->passes(event);
+  if(!pass_met) return false;
+  HFolder("met")->fill(event);
+  ////
+  // std::cout<<"PASS MET"<<std::endl;
+
+
+  //// HT_lep selection
+  const bool pass_htlep = htlep_sel->passes(event);
+  if(!pass_htlep) return false;
+  HFolder("htlep")->fill(event);
+  ////
+  // std::cout<<"PASS HT_lep"<<std::endl;
+
+
+ /* lepton-2Dcut variables */
   const bool pass_twodcut = twodcut_sel->passes(event); {
 
     for(auto& muo : *event.muons){
@@ -271,6 +318,7 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
       muo.set_tag(Muon::twodcut_pTrel, pTrel);
     }
 
+    
     for(auto& ele : *event.electrons){
 
       float    dRmin, pTrel;
@@ -280,38 +328,16 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
       ele.set_tag(Electron::twodcut_pTrel, pTrel);
     }
   }
+  if(!pass_twodcut) std::cout<<"event did not pass 2D cut, but we don't care right now "<<std::endl;
+  //   TEST: no 2D cut for QCD suppression studies
+ //  //// LEPTON-2Dcut selection
+ //  // if(!pass_twodcut) std::cout<<"XMMMM Not pass 2D cut"<<std::endl;
+ //  if(!pass_twodcut) return false;
+ //  // std::cout<<"AGA! pass 2D cut"<<std::endl;
+ //  HFolder("twodcut")->fill(event);
+ //  ////
 
-  jet_cleaner2->process(event);
-  sort_by_pt<Jet>(*event.jets);
-
-  /* 2nd AK4 jet selection */
-  const bool pass_jet2 = jet2_sel->passes(event);
-  if(!pass_jet2) return false;
-  HFolder("jet2")->fill(event);
-
-  /* 1st AK4 jet selection */
-  const bool pass_jet1 = jet1_sel->passes(event);
-  if(!pass_jet1) return false;
-  HFolder("jet1")->fill(event);
-  ////
-
-  //// MET selection
-  const bool pass_met = met_sel->passes(event);
-  if(!pass_met) return false;
-  HFolder("met")->fill(event);
-  ////
-
-  //// HT_lep selection
-  const bool pass_htlep = htlep_sel->passes(event);
-  if(!pass_htlep) return false;
-  HFolder("htlep")->fill(event);
-  ////
-
-  //// LEPTON-2Dcut selection
-  if(!pass_twodcut) return false;
-  HFolder("twodcut")->fill(event);
-  ////
-
+  // std::cout<<"We made it! =)"<<std::endl;
   return true;
 }
 

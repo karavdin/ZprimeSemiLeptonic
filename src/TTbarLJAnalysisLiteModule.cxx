@@ -32,6 +32,11 @@
 #include <UHH2/ZprimeSemiLeptonic/include/SF_btagging.h>
 #include <UHH2/ZprimeSemiLeptonic/include/SF_ttagging.h>
 
+
+#include "TMVA/Tools.h"
+#include "TMVA/Reader.h"
+#include "TMVA/MethodCuts.h"
+
 class TTbarLJAnalysisLiteModule : public ModuleBASE {
 
  public:
@@ -152,6 +157,39 @@ class TTbarLJAnalysisLiteModule : public ModuleBASE {
   //
 
   ////
+
+  // vars in TTree for Homemade ttbar MVA
+  //ToDo: add errors of reconstructed vars!
+  Event::Handle<float> tt_lep_pt;//lepton pt
+  Event::Handle<float> tt_lep_eta;//lepton eta
+  Event::Handle<float> tt_lep_xy;// x^2+y^2 vertex of the lepton 
+  Event::Handle<float> tt_MwT;// Transversal mass
+  Event::Handle<float> tt_lep_fbrem;//fraction of energy loss due to bremsstrahlung. !cation: in 8TeV was well modeled only for |eta|<1.44
+  Event::Handle<float> tt_met_pt;//MET pt
+  Event::Handle<float> tt_ljet_pt;//jet pt (for the leading jet)
+  Event::Handle<float> tt_lep_pt_ljet;// lepton Pt to the leading jet axis
+  Event::Handle<float> tt_dR_cljet_ljet;//distance in eta-phi between close jet  and leading jet
+  Event::Handle<float> tt_dR_lep_cljet;// distance between lepton and the closest not leading jet in eta-phi
+  Event::Handle<int> tt_lep_class;// rec.electron classification
+
+  Event::Handle<float> tt_ev_weight;// event weight
+
+  float met_pt;//MET
+  float lep_pt, lep_eta;//lepton
+  float ljet_pt;//leading jet 
+  float lep_xy; //x^2+y^2 vertex of the lepton
+  float lep_fbrem; 
+  float MwT;// Transversal mass
+  float lep_pt_ljet;// lepton Pt to the leading jet axis
+  float dR_cljet_ljet;//distance in eta-phi between the closest jet and the leading jet 
+  float dR_lep_cljet;//distance in eta-phi for the closest not leading jet to lepton  
+  int lep_class;// rec.electron classification
+
+  float ev_weight;
+
+  // TMVA::Reader *reader;
+  // TString methodName;
+  // float TMVA_response;
 };
 
 TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
@@ -166,9 +204,13 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
   else throw std::runtime_error("TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule -- undefined argument for 'channel' key in xml file (must be 'muon' or 'elec'): "+channel);
 
   use_ttagging_ = true;
-
-  blind_DATA_ = ((ctx.get("dataset_version").find("BLINDED") != std::string::npos) && (ctx.get("dataset_type") == "DATA") && !isMC);
+  blind_DATA_ = false;
+  if     (ctx.get("blind_DATA") == "true")  blind_DATA_ = true && !isMC;
+  else if(ctx.get("blind_DATA") == "false") blind_DATA_ = false;
+  else throw std::runtime_error("undefined argument for 'blind_DATA' key in xml file (must be 'true' or 'false')");
+  //blind_DATA_ = ((ctx.get("dataset_version").find("BLINDED") != std::string::npos) && (ctx.get("dataset_type") == "DATA") && !isMC);
   //
+  if(blind_DATA_) std::cout<<"BLIND DATA!"<<std::endl;
 
   const std::string& keyword = ctx.get("keyword");
 
@@ -176,10 +218,12 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
   bool triangul_cut(false);
   bool topleppt_cut(false);
 
-  if(keyword == "T0_v01" || keyword == "T1_v01"){
+  //  if(keyword == "T0_v01" || keyword == "T1_v01"){
+  if(keyword == "T0_v01" || keyword == "T1_v01" || keyword == "v01"){//TEST for QCD studies which does not care about t-tagging
 
     if     (keyword == "T0_v01") use_ttagging_ = false;
     else if(keyword == "T1_v01") use_ttagging_ = true;
+    else if(keyword == "v01") use_ttagging_ = true;//TEST for QCD studies which does not care about t-tagging
 
     if(channel_ == muon){
 
@@ -194,10 +238,14 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
     }
     else if(channel_ == elec){
 
-      jet1_pt = 250.;
-      jet2_pt =  70.;
+      // jet1_pt = 250.;
+      // jet2_pt =  70.;
+      //   MET    = 120.;      
+     
+      jet1_pt = 200.; //TEST for QCD supprestion studies
+      jet2_pt = 50.; //TEST for QCD supprestion studies
+      MET    = 0.; //TEST for QCD supprestion studies
 
-      MET    = 120.;
       HT_lep =   0.;
 
       triangul_cut = false;
@@ -267,7 +315,8 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
   }
   else topleppt_sel.reset(new uhh2::AndSelection(ctx));
 
-  chi2_sel.reset(new HypothesisDiscriminatorCut(ctx,  0., 30., ttbar_hyps_label, ttbar_chi2_label));
+  //  chi2_sel.reset(new HypothesisDiscriminatorCut(ctx,  0., 30., ttbar_hyps_label, ttbar_chi2_label));
+  chi2_sel.reset(new HypothesisDiscriminatorCut(ctx,  0., 1e6, ttbar_hyps_label, ttbar_chi2_label)); //No cut for QCD studies
 
   //// HISTS
 
@@ -463,9 +512,39 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
   //
 
   ////
+
+  ///Homemade ttbar MVA input
+  met_pt = 0; ljet_pt = 0;
+  lep_pt = 0; lep_eta = 0;
+  lep_xy = 0; lep_fbrem = 0;
+  MwT = 0; lep_pt_ljet = 0;
+  dR_cljet_ljet = 0; dR_lep_cljet = 0;
+  lep_class = -10;
+  ev_weight = 0;
+
+  tt_met_pt = ctx.declare_event_output<float>("met_pt");
+  tt_lep_pt = ctx.declare_event_output<float>("lep_pt");
+  tt_lep_eta = ctx.declare_event_output<float>("lep_eta");
+  tt_ljet_pt = ctx.declare_event_output<float>("ljet_pt");
+  tt_lep_xy = ctx.declare_event_output<float>("lep_xy");
+  tt_lep_fbrem = ctx.declare_event_output<float>("lep_fbrem");
+  tt_MwT = ctx.declare_event_output<float>("MwT");
+  tt_lep_pt_ljet = ctx.declare_event_output<float>("lep_pt_ljet");
+  tt_dR_cljet_ljet = ctx.declare_event_output<float>("dR_cljet_ljet");
+  tt_dR_lep_cljet = ctx.declare_event_output<float>("dR_lep_cljet");
+  tt_lep_class = ctx.declare_event_output<int>("lep_class");
+  tt_ev_weight = ctx.declare_event_output<float>("weight");
+
+
+  // /// Homemade ttbar MVA output
+  // TMVA_response = 0;
+
+  ////
 }
 
 bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
+  // std::cout<<" "<<std::endl;
+  // std::cout<<"New Event! "<<std::endl;
 
   if(!event.isRealData){
 
@@ -483,7 +562,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   if(!event.isRealData){
 
     w_GEN = event.weight;
-
+    //    std::cout<<"event.weight = "<<event.weight<<std::endl;
     // pileup
     w_pileupSF_ct = pileupSF_ct->weight(event);
     w_pileupSF_up = pileupSF_up->weight(event);
@@ -535,7 +614,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
     //
   }
   //
-
+  //  std::cout<<"Now let's go to lepton selection "<<std::endl;
   ////
 
   //// LEPTON SELECTION
@@ -554,6 +633,12 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
 
   ////
 
+
+  //TEST: Check classification vs chi2 for QCD studies
+  //if((event.electrons->at(0)).Class()!=2) return false;//2 = BadTrk
+  // if((event.electrons->at(0)).Class()!=3) return false;//3 = Shower
+
+  //  std::cout<<"Now let's go to jet selection "<<std::endl;
   //// JET selection
 
   /* 2nd AK4 jet selection */
@@ -574,23 +659,28 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   if(lepN == 1) HFolder("trigger")->fill(event);
   ////
 
+  //  std::cout<<"Now let's go to MET selection "<<std::endl;
   //// MET selection
   const bool pass_met = met_sel->passes(event);
   if(!pass_met) return false;
   if(lepN == 1) HFolder("met")->fill(event);
   ////
 
+  //  std::cout<<"Now let's go to HT_lep selection "<<std::endl;
   //// HT_lep selection
   const bool pass_htlep = htlep_sel->passes(event);
   if(!pass_htlep) return false;
   if(lepN == 1) HFolder("htlep")->fill(event);
   ////
 
-  //// TRIANGULAR-CUTS selection
-  const bool pass_triangc = triangc_sel->passes(event);
-  if(!pass_triangc) return false;
-  if(lepN == 1) HFolder("triangc")->fill(event);
-  ////
+
+
+  //TEST: no TRIANGULAR-CUTS for QCD suppression studies!
+  // //// TRIANGULAR-CUTS selection
+  // const bool pass_triangc = triangc_sel->passes(event);
+  // if(!pass_triangc) return false;
+  // if(lepN == 1) HFolder("triangc")->fill(event);
+  // ////
 
   //// TTBAR KIN RECO
 
@@ -598,6 +688,8 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   const bool pass_ttagevt = ttagevt_sel->passes(event) && use_ttagging_;
 
   const std::string ttag_posx = (pass_ttagevt ? "t1" : "t0");
+
+  //  std::cout<<"Now let's go to reco_primlep "<<std::endl;
   /************************/
 
   reco_primlep->process(event);
@@ -623,6 +715,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
 
   ////
 
+  //  std::cout<<"Now let's go to LEPTONIC-TOP pt selection "<<std::endl;
   //// LEPTONIC-TOP pt selection
   const bool pass_topleppt = topleppt_sel->passes(event);
   if(!pass_topleppt) return false;
@@ -660,6 +753,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   const std::string btag_posx = (btagN >= 2 ? "b2" : (btagN >= 1 ? "b1" : "b0"));
   /******************/
 
+  //  std::cout<<"Now let's go to FINAL KINEMATIC selection "<<std::endl;
   //// FINAL KINEMATIC selection
   if(lepN == 1){
 
@@ -690,8 +784,10 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
 //!!  }
 //!!  ////
 
+//  std::cout<<"Now let's go to CHI2 selection "<<std::endl;
   //// CHI2 selection
-  const bool pass_chi2 = chi2_sel->passes(event);
+   const bool pass_chi2 = chi2_sel->passes(event);
+  // const bool pass_chi2 = true; //TEST for QCD studies
 
   const std::string chi2_posx = pass_chi2 ? "chi2" : "antichi2";
 
@@ -722,6 +818,8 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   }
   ////
 
+  //  std::cout<<"Now let's set VARS "<<std::endl;
+
   //// VARS
 
   // event
@@ -734,6 +832,8 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   event.set(h_muoN , event.muons    ->size());
   event.set(h_eleN , event.electrons->size());
 
+  // std::cout<<"Now let's set tags! "<<std::endl;
+
   int ttagN(0);
   for(const auto& tj : *event.topjets) if(ttag_ID_(tj, event)) ++ttagN;
 
@@ -742,6 +842,8 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
 
   event.set(h_ttagevt, pass_ttagevt);
   //
+
+  // std::cout<<"Now let's set leptons! "<<std::endl;
 
   // lepton
   const Particle* lep1 = leading_lepton(event);
@@ -773,15 +875,16 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
     }
   }
   else if(channel_ == elec){
-
+    //    std::cout<<"... I mean electrons ;)"<<std::endl;
     lep1__pdgID     = lep1->charge() * -11;
     lep1__charge    = lep1->charge();
+    //     std::cout<<"... I mean all tags and stuff... "<<Electron::twodcut_dRmin<<" "<<Electron::twodcut_pTrel<<std::endl;
     lep1__minDR_jet = ((Electron*) lep1)->get_tag(Electron::twodcut_dRmin);
     lep1__pTrel_jet = ((Electron*) lep1)->get_tag(Electron::twodcut_pTrel);
+
     lep1__p4        = TLorentzVector(lep1->v4().Px(), lep1->v4().Py(), lep1->v4().Pz(), lep1->v4().E());
 
     if(lep2){
-
       lep2__pdgID     = lep2->charge() * -11;
       lep2__charge    = lep2->charge();
       lep2__minDR_jet = ((Electron*) lep2)->get_tag(Electron::twodcut_dRmin);
@@ -803,10 +906,12 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   event.set(h_lep2__pTrel_jet, lep2__pTrel_jet);
   //
 
+  //  std::cout<<"Now let's set MET "<<std::endl;
   // MET
   event.set(h_MET, TLorentzVector(event.met->v4().Px(), event.met->v4().Py(), event.met->v4().Pz(), event.met->v4().P()));
   //
 
+  //  std::cout<<"Now let's set ttbar "<<std::endl;
   // ttbar reco hyp
   const ReconstructionHypothesis* rec_ttbar = get_best_hypothesis(ttbar_hyps, "Chi2");
   if(!rec_ttbar) throw std::runtime_error("TTbarLJAnalysisLiteModule::process -- logic error: ttbar reconstruction hypothesis (\"get_best_hypothesis\", discr=Chi2) not found");
@@ -852,6 +957,54 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   //
 
   ////
+
+
+  //Fill vars for Homemade ttbar MVA
+  if(channel_ == elec){ //ToDo: extend for case with muon(s)
+    const Electron *lep = &event.electrons->at(0);
+    lep_class = lep->Class();
+    event.set(tt_lep_class, lep_class);
+
+    met_pt = event.met->pt();
+    event.set(tt_met_pt, met_pt); 
+    lep_pt = lep->pt(); lep_eta = lep->eta();
+    event.set(tt_lep_pt, lep_pt);   event.set(tt_lep_eta, lep_eta);
+    if(!event.isRealData) 
+      lep_xy = hypot(lep->gsfTrack_vx()+0.045,lep->gsfTrack_vy()+0.095); //TEST: shift for agreement with DATA (RunII, 0.6 pb^-1)
+    else
+      lep_xy = hypot(lep->gsfTrack_vx(),lep->gsfTrack_vy());
+    event.set(tt_lep_xy,lep_xy);
+    lep_fbrem = lep->fbrem();
+    event.set(tt_lep_fbrem,lep_fbrem);
+    const int jet_n = event.jets->size();
+    //the closest to lepton jet
+    // find jet with smallest angle to lepton (the closest jet to lepton)
+    int jet_pos = 0;
+    dR_lep_cljet = 1e7;
+    //for(int i=0; i<jet_n; i++){
+    for(int i=1; i<jet_n; i++){//skip leading jet
+      const Particle* jeti =  &event.jets->at(i);
+      float dR_current = uhh2::deltaR(*lep, *jeti);
+      if(dR_lep_cljet>dR_current){// min distance in eta-phi
+	dR_lep_cljet = dR_current;      
+	jet_pos = i;
+      }
+    }
+    event.set(tt_dR_lep_cljet, dR_lep_cljet); 
+    const Particle*  jet0 =  &event.jets->at(jet_pos); 
+    //leading jet
+    const Particle* jet1 = &event.jets->at(0);
+    ljet_pt = jet1->pt();
+    event.set(tt_ljet_pt, ljet_pt);
+    lep_pt_ljet = pTrel(*lep, jet1);
+    event.set(tt_lep_pt_ljet, lep_pt_ljet);
+    dR_cljet_ljet = uhh2::deltaR(*jet0, *jet1);
+    event.set(tt_dR_cljet_ljet, dR_cljet_ljet);
+    float dPhi_met_lep = fabs(uhh2::deltaPhi(*event.met, *lep));
+    MwT = sqrt(2*fabs(lep_pt)*fabs(met_pt)*(1-cos(dPhi_met_lep)));
+    event.set(tt_MwT,MwT);
+  }
+  event.set(tt_ev_weight,event.weight);
 
   return true;
 }
