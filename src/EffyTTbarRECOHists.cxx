@@ -59,7 +59,7 @@ void EffyTTbarRECOHists::init(){
   book_TH1F("rec_chi2", 300, 0, 600);
   book_TH2F("rec_chi2__VS__rec_ttbar__M", 300, 0, 600, 600, 0, 6000);
 
-  book_TH1F("rec_ttbar__M"          , 600, 0, 6000);
+  book_TH1F("rec_ttbar__M"          , 250, 0, 5000);
   book_TH1F("rec_ttbar__pt"         , 300, 0, 3000);
   book_TH1F("rec_ttbar__gen_DM"     , 120, -600, 600);
   book_TH1F("rec_ttbar__gen_Dpt"    , 120, -600, 600);

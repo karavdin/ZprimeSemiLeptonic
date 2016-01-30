@@ -33,9 +33,9 @@
 #include <UHH2/ZprimeSemiLeptonic/include/SF_ttagging.h>
 
 
-#include "TMVA/Tools.h"
-#include "TMVA/Reader.h"
-#include "TMVA/MethodCuts.h"
+#include <TMVA/Tools.h>
+#include <TMVA/Reader.h>
+#include <TMVA/MethodCuts.h>
 
 class TTbarLJAnalysisLiteModule : public ModuleBASE {
 
@@ -90,6 +90,8 @@ class TTbarLJAnalysisLiteModule : public ModuleBASE {
   std::unique_ptr<weightcalc_ttagging> ttagSF_dnL;
   std::unique_ptr<weightcalc_ttagging> ttagSF_upT;
   std::unique_ptr<weightcalc_ttagging> ttagSF_dnT;
+
+  std::unique_ptr<MCVarReweight> varvariation;
   ////
 
   //// VARS
@@ -173,11 +175,15 @@ class TTbarLJAnalysisLiteModule : public ModuleBASE {
   Event::Handle<float> tt_dR_cljet_ljet;//distance in eta-phi between close jet  and leading jet
   Event::Handle<float> tt_dR_lep_cljet;// distance between lepton and the closest not leading jet in eta-phi
   Event::Handle<int> tt_lep_class;// rec.electron classification
+  Event::Handle<float> tt_ljet_CSV;//btagging: CombinedSecondaryVertex
+  Event::Handle<float> tt_nJets;//number of jets
+  Event::Handle<float> tt_jets_pt;//sum of jets pt
 
   Event::Handle<float> tt_ev_weight;// event weight
+  Event::Handle<float> tt_mttbar;//ttbar inv. mass
 
   float met_pt;//MET
-  float lep_pt, lep_eta;//lepton
+  float lep_pt, lep_eta, fabs_lep_eta;//lepton
   float ljet_pt;//leading jet 
   float lep_xy; //x^2+y^2 vertex of the lepton
   float lep_fbrem; 
@@ -186,12 +192,19 @@ class TTbarLJAnalysisLiteModule : public ModuleBASE {
   float dR_cljet_ljet;//distance in eta-phi between the closest jet and the leading jet 
   float dR_lep_cljet;//distance in eta-phi for the closest not leading jet to lepton  
   int lep_class;// rec.electron classification
-
+  float ljet_CSV;//btag: combinedSecondaryVertex
+  float nJets;//number of jets
+  float jets_pt;//sum of jets pt
   float ev_weight;
 
-  // TMVA::Reader *reader;
-  // TString methodName;
-  // float TMVA_response;
+  float rec_ttbar_M_;
+  float log_ljet_pt, log_dR_cljet_ljet, log_dR_lep_cljet, log_lep_pt, jets_pt_to_lep_pt, lep_pt_ljet_to_lep_pt, log_met_pt_to_ljet_pt;
+  float jets_pt_to_ljet_pt,  log_lep_xy_corr, log_ljet_CSV_ljet_pt;
+  std::unique_ptr<TMVA::Reader> reader;
+  //  TMVA::Reader *reader;
+  TString methodName;
+  float TMVA_response;
+  Event::Handle<float> tt_TMVA_response;// response of TMVA method
 };
 
 TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
@@ -247,6 +260,7 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
       jet1_pt = 200.; //TEST for QCD supprestion studies
       jet2_pt = 50.; //TEST for QCD supprestion studies
       MET    = 0.; //TEST for QCD supprestion studies
+      //      MET    = 30.; //TEST for QCD supprestion studies
 
       HT_lep =   0.;
 
@@ -274,6 +288,7 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
   else                  trigger_sel.reset(new uhh2::AndSelection(ctx));
 
   met_sel  .reset(new METCut  (MET   , uhh2::infinity));
+  //  met_sel  .reset(new METCut  (0,MET)); //TEST: QCD sideband
   htlep_sel.reset(new HTlepCut(HT_lep, uhh2::infinity));
 
   if(triangul_cut){
@@ -403,6 +418,21 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
   }
   //
 
+ std::vector<std::string> htags_4({
+
+    "REWEIGHTED",
+  });
+
+  for(const auto& tag : htags_4){
+
+    // book_HFolder(tag          , new TTbarLJHists      (ctx, tag          , ttag_ID_, ttag_minDR_jet_));
+    // book_HFolder(tag+"__ttbar", new EffyTTbarRECOHists(ctx, tag+"__ttbar", ttbar_gen_label, ttbar_hyps_label, ttbar_chi2_label));
+
+    book_HFolder(tag          , new TTbarLJHists      (ctx, tag));
+    book_HFolder(tag+"__ttbar", new EffyTTbarRECOHists(ctx, tag+"__ttbar"));
+  }
+  //
+
   ////
 
   //// Data/MC scale factors
@@ -449,6 +479,10 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
   ttagSF_dnT.reset(new weightcalc_ttagging(ttag_SFac_file, ttag_wp, "comb", "comb", "CT", "DN", ttag_effy_file, ttag_effyL, ttag_effyT));
   //
 
+  // MVA vars variations
+  const std::string& reweight_MC_file = ctx.get("reweight_file");
+
+  varvariation.reset(new MCVarReweight(ctx));
   ////
 
   //// VARS
@@ -526,12 +560,18 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
 
   ///Homemade ttbar MVA input
   met_pt = 0; ljet_pt = 0;
-  lep_pt = 0; lep_eta = 0;
+  lep_pt = 0; lep_eta = 0; fabs_lep_eta = 0;
   lep_xy = 0; lep_fbrem = 0;
   MwT = 0; lep_pt_ljet = 0;
   dR_cljet_ljet = 0; dR_lep_cljet = 0;
   lep_class = -10;
   ev_weight = 0;
+  //  mttbar = 0;
+  log_ljet_pt = 0; log_dR_cljet_ljet = 0; log_dR_lep_cljet = 0; log_lep_pt = 0;
+  jets_pt = 0;
+  jets_pt_to_lep_pt = 0; lep_pt_ljet_to_lep_pt=0; log_met_pt_to_ljet_pt = 0;
+  jets_pt_to_ljet_pt = 0;  log_lep_xy_corr = 0;  log_ljet_CSV_ljet_pt = 0;
+
 
   tt_met_pt = ctx.declare_event_output<float>("met_pt");
   tt_lep_pt = ctx.declare_event_output<float>("lep_pt");
@@ -544,19 +584,95 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
   tt_dR_cljet_ljet = ctx.declare_event_output<float>("dR_cljet_ljet");
   tt_dR_lep_cljet = ctx.declare_event_output<float>("dR_lep_cljet");
   tt_lep_class = ctx.declare_event_output<int>("lep_class");
+  tt_ljet_CSV = ctx.declare_event_output<float>("ljet_CSV");
   tt_ev_weight = ctx.declare_event_output<float>("weight");
+  tt_mttbar = ctx.declare_event_output<float>("Mttbar");
+  tt_nJets= ctx.declare_event_output<float>("nJets");
+  tt_jets_pt = ctx.declare_event_output<float>("jets_pt");
+  /// Homemade ttbar MVA output
+  TMVA_response = 0;
+  tt_TMVA_response = ctx.declare_event_output<float>("TMVA_response");
+  // --- Create the Reader object
+  //reader = new TMVA::Reader( "!Color:!Silent" );  
 
+ 
 
-  // /// Homemade ttbar MVA output
-  // TMVA_response = 0;
+  reader.reset(new TMVA::Reader( "!Color:!Silent" ));
+  // //Categories ------------------------------
+  // reader->AddVariable("fabs(lep_eta)", &fabs_lep_eta);
+  // reader->AddVariable("log(met_pt/ljet_pt)", &log_met_pt_to_ljet_pt);
+  // reader->AddVariable("jets_pt/ljet_pt",&jets_pt_to_ljet_pt);
+  // reader->AddVariable("log(fabs(lep_xy-0.1216))",&log_lep_xy_corr);
+  // reader->AddVariable("log(ljet_CSV/ljet_pt)",&log_ljet_CSV_ljet_pt);
+  // reader->AddVariable("MwT", &MwT);
+  // reader->AddVariable("nJets", &nJets);
+  // reader->AddVariable("lep_pt_ljet/lep_pt",&lep_pt_ljet_to_lep_pt);
+  // //[END]Categories -------------------------
 
+  //Golden Set -------------------------------
+  reader->AddVariable("fabs(lep_eta)", &fabs_lep_eta);
+  reader->AddVariable("MwT", &MwT);
+  reader->AddVariable("met_pt", &met_pt);
+  reader->AddVariable("ljet_CSV", &ljet_CSV);
+  //  reader->AddVariable("log(ljet_pt)", &log_ljet_pt); 
+  reader->AddVariable("log(lep_pt)",&log_lep_pt);
+  reader->AddVariable("log(dR_lep_cljet)", &log_dR_lep_cljet);
+  reader->AddVariable("log(fabs((dR_cljet_ljet-3.14)/3.14))", &log_dR_cljet_ljet);
+  //[END] Golden Set -------------------------
+  reader->AddVariable("jets_pt",&jets_pt);
+
+  reader->AddSpectator("Mttbar",&rec_ttbar_M_);
+
+  //  reader->AddVariable("log(lep_pt)",&log_lep_pt);
+  // 
+  //  reader->AddVariable("ljet_CSV", &ljet_CSV);
+  //  reader->AddVariable("log(ljet_pt)", &log_ljet_pt); //TEST
+  //  reader->AddVariable("log(fabs((dR_cljet_ljet-3.14)/3.14))", &log_dR_cljet_ljet);
+
+  // --- book the MVA methods
+  //  TString dir    = "../TMVA_weights/";
+  TString dir    = "/afs/desy.de/user/k/karavdia/xxl/af-cms/CMSSW_7_4_15_patch1/src/UHH2/ZprimeSemiLeptonic/TMVA_weights/"; //ToDo: make it param in xml
+  // //  TString dir    = "ZprimeSemiLeptonic/TMVA_weights/"; 
+  //  methodName = "BDT::BDT method";
+  //TString weightfile = dir + "Homemade_TTbarMVAClassification_BDT.weights.xml";
+  //  TString weightfile = dir + "Homemade_TTbarMVAClassification_BDT_MET40.weights.xml";
+  // TString weightfile = dir + "Homemade_TTbarMVAClassification_BDT_2.weights.xml"; //w/t ljet_pt and Log($\Delta$R(lep, jet0))
+  // TString weightfile = dir + "Homemade_TTbarMVAClassification_BDT_6.weights.xml";
+  //  TString weightfile = dir + "Homemade_TTbarMVAClassification_BDT_20160115.xml";
+
+   methodName = "MLP::MLPBNN";
+   //   TString weightfile = dir + "Homemade_TTbarMVAClassification_MLPBNN_8vars.weights.xml";
+  //  TString weightfile = dir + "Homemade_TTbarMVAClassification_MLPCat.weights.xml";
+   //   TString weightfile = dir + "Homemade_TTbarMVAClassification_MLPBNN_Zp1to4TeV.weights.xml";
+  //  TString weightfile = dir + "Homemade_TTbarMVAClassification_MLPBNN_Zp2to4TeV.weights.xml";//TRY ME!
+  // TString weightfile = dir + "Homemade_TTbarMVAClassification_MLPBNN_TTbarZp2to4TeV.weights.xml";
+
+   //   TString weightfile = dir + "Homemade_TTbarMVAClassification_MLPBNN_TTbar_X3_Zp2to4_X1_5_N-2N+0_newVars.weights.xml";
+   //   TString weightfile = dir + "Homemade_TTbarMVAClassification_MLPBNN_TTbar_X15_Zp2to4_X1_5_N-2N+4_newVars.weights.xml";
+   TString weightfile = dir + "Homemade_TTbarMVAClassification_MLPBNN_TTbar_X6_Zp2to4_X1_5_N-2N+4_newVars.weights.xml";
+
+  // methodName = "Category::BDTCat";
+  // TString weightfile = dir + "Homemade_TTbarMVAClassification_BDTCat20160117.weights.xml";
+
+  // methodName = "Category::MLPCat";
+  // TString weightfile = dir + "Homemade_TTbarMVAClassification_MLPCat20160117.weights.xml";
+
+  // methodName = "BDT::BDT";
+  // TString weightfile = dir + "Homemade_TTbarMVAClassification_BDT_20160117.xml";
+
+  //methodName = "Category::MLPCat";
+  // TString weightfile = dir + "Homemade_TTbarMVAClassification_MLPCat20160121.weights.xml";
+  //TString weightfile = dir + "Homemade_TTbarMVAClassification_MLPCat_TTbarZp2to4.weights.xml";
+
+  reader->BookMVA(methodName, weightfile);
   ////
+
 }
 
 bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   // std::cout<<" "<<std::endl;
   // std::cout<<"New Event! "<<std::endl;
-
+  event.set(tt_TMVA_response, TMVA_response);//fill 1st hists with default value
   if(!event.isRealData){
 
     ttgenprod->process(event);
@@ -967,6 +1083,9 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
 
 
   //Fill vars for Homemade ttbar MVA
+ const int jet_n = event.jets->size();
+ nJets = jet_n;
+ event.set(tt_nJets,nJets);
   if(channel_ == elec){ //ToDo: extend for case with muon(s)
     const Electron *lep = &event.electrons->at(0);
     lep_class = lep->Class();
@@ -974,23 +1093,28 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
 
     met_pt = event.met->pt();
     event.set(tt_met_pt, met_pt); 
-    lep_pt = lep->pt(); lep_eta = lep->eta();
+    lep_pt = lep->pt(); lep_eta = lep->eta(); fabs_lep_eta = fabs(lep_eta);
     event.set(tt_lep_pt, lep_pt);   event.set(tt_lep_eta, lep_eta);
     if(!event.isRealData) 
-      lep_xy = hypot(lep->gsfTrack_vx()+0.045,lep->gsfTrack_vy()+0.095); //TEST: shift for agreement with DATA (RunII, 0.6 pb^-1)
+      //    lep_xy = hypot(lep->gsfTrack_vx()+0.045,lep->gsfTrack_vy()+0.095); //TEST: shift for agreement with DATA (RunII, 0.6 pb^-1)
+    lep_xy = hypot(lep->gsfTrack_vx(),lep->gsfTrack_vy())+0.121540; //TEST: shift for agreement with DATA (RunII, 2.5 pb^-1)
     else
       lep_xy = hypot(lep->gsfTrack_vx(),lep->gsfTrack_vy());
     event.set(tt_lep_xy,lep_xy);
+    log_lep_xy_corr = log(lep_xy-0.121540);
     lep_fbrem = lep->fbrem();
     event.set(tt_lep_fbrem,lep_fbrem);
-    const int jet_n = event.jets->size();
+   
+
     //the closest to lepton jet
     // find jet with smallest angle to lepton (the closest jet to lepton)
     int jet_pos = 0;
     dR_lep_cljet = 1e7;
+    jets_pt = (&event.jets->at(0))->pt();
     //for(int i=0; i<jet_n; i++){
     for(int i=1; i<jet_n; i++){//skip leading jet
       const Particle* jeti =  &event.jets->at(i);
+      jets_pt += jeti->pt();
       float dR_current = uhh2::deltaR(*lep, *jeti);
       if(dR_lep_cljet>dR_current){// min distance in eta-phi
 	dR_lep_cljet = dR_current;      
@@ -998,21 +1122,129 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
       }
     }
     event.set(tt_dR_lep_cljet, dR_lep_cljet); 
+    event.set(tt_jets_pt,jets_pt);
+    jets_pt_to_lep_pt = log(jets_pt/lep_pt);
     const Particle*  jet0 =  &event.jets->at(jet_pos); 
     //leading jet
-    const Particle* jet1 = &event.jets->at(0);
+    const Jet* jet1 = &event.jets->at(0);
     ljet_pt = jet1->pt();
+    jets_pt_to_ljet_pt = jets_pt/ljet_pt;
+    log_met_pt_to_ljet_pt = log(met_pt/ljet_pt);
     event.set(tt_ljet_pt, ljet_pt);
+    ljet_CSV = jet1->btag_combinedSecondaryVertex();
+    if(fabs(ljet_CSV)>1.5) return false;
+    event.set(tt_ljet_CSV,ljet_CSV);
+    log_ljet_CSV_ljet_pt = log(ljet_CSV/ljet_pt);
     lep_pt_ljet = pTrel(*lep, jet1);
     event.set(tt_lep_pt_ljet, lep_pt_ljet);
     dR_cljet_ljet = uhh2::deltaR(*jet0, *jet1);
+    lep_pt_ljet_to_lep_pt = lep_pt_ljet/lep_pt;
     event.set(tt_dR_cljet_ljet, dR_cljet_ljet);
     float dPhi_met_lep = fabs(uhh2::deltaPhi(*event.met, *lep));
-    MwT = sqrt(2*fabs(lep_pt)*fabs(met_pt)*(1-cos(dPhi_met_lep)));
+    MwT = sqrt(2*fabs(lep_pt*met_pt*(1-cos(dPhi_met_lep))));
     event.set(tt_MwT,MwT);
   }
+
+
+ 
+  const ReconstructionHypothesis* rec_ttbar_ = get_best_hypothesis(ttbar_hyps, "Chi2");
+  rec_ttbar_M_ = ((rec_ttbar_->top_v4()+rec_ttbar_->antitop_v4()).M());
+  event.set(tt_mttbar,rec_ttbar_M_);
+
+
+  log_ljet_pt = log(ljet_pt);
+  log_dR_cljet_ljet = log(fabs((dR_cljet_ljet-3.14)/3.14));
+  log_dR_lep_cljet = log(dR_lep_cljet);
+  log_lep_pt = log(lep_pt);
+
+  TMVA_response = reader->EvaluateMVA(methodName);
+  event.set(tt_TMVA_response, TMVA_response);
+
+  //Study TMVA response: reweight variables according to DATA/MC descripency
+  // if(!event.isRealData){
+//  //  // //1) |lep eta|
+// // //   // //|lep $\eta$|$\le$1.55 : y =  0.714706 + 1.56221$\cdot$x -4.63865$\cdot$x$^2$ + 4.88718$\cdot$x$^3$ -1.66262$\cdot$x$^4$
+// // //   // //|lep $\eta$|>1.55: y = 189.101  -399.761$\cdot$x +317.191$\cdot$x$^2$ -111.334$\cdot$x$^3$ +14.5676$\cdot$x$^4$
+// // //   // TF1 *fpol5_1 = new TF1("fpol5_1","pol4",0,1.55);
+// // //   // fpol5_1->SetParameter(0,0.714706);fpol5_1->SetParameter(1,1.56221);fpol5_1->SetParameter(2,-4.63865);fpol5_1->SetParameter(3,4.88718);fpol5_1->SetParameter(4,-1.66262);
+// // //   // TF1 *fpol5_2 = new TF1("fpol5_2","pol4",1.55,2.5);
+// // //   // fpol5_2->SetParameter(0,189.101);fpol5_2->SetParameter(1,-399.761);fpol5_2->SetParameter(2,317.191);fpol5_2->SetParameter(3,-111.334);fpol5_2->SetParameter(4,14.5676);
+// // //   // if(fabs_lep_eta<=1.55) event.weight*=fpol5_1->Eval(fabs_lep_eta);
+// // //   // else event.weight*=fpol5_2->Eval(fabs_lep_eta);
+// // // // |lep $\eta$|<0.8 : y = 0.750898   +  1.07869$\cdot$x  -3.07643$\cdot$x$^2$ +2.53171$\cdot$x$^3$  
+// // // // 0.8<|lep $\eta$|<1.55: y = 4.21908 -11.6711$\cdot$x +12.3603$\cdot$x$^2$ -4.10007$\cdot$x$^3$ 
+// // // // |lep $\eta$|>1.55: y = 189.101 -399.761$\cdot$x +317.191$\cdot$x$^2$ -111.334$\cdot$x$^3$ +14.5676$\cdot$x$^4$
+// //     TF1 *fpol3_1 = new TF1("fpol3_1","pol3",0,0.8);
+// //     fpol3_1->SetParameter(0,0.750898); fpol3_1->SetParameter(1,1.07869); fpol3_1->SetParameter(2,-3.07643); fpol3_1->SetParameter(3,2.53171);
+// //     TF1 *fpol3_2 = new TF1("fpol3_2","pol3",0.8,1.55);
+// //     fpol3_2->SetParameter(0,4.21908); fpol3_2->SetParameter(1,-11.6711); fpol3_2->SetParameter(2,+12.3603); fpol3_2->SetParameter(3,-4.10007);
+// //     TF1 *fpol4 = new TF1("fpol4","pol4",1.55,3.);
+// //     fpol4->SetParameter(0,189.101);  fpol4->SetParameter(1,-399.761);  fpol4->SetParameter(2,317.191);  fpol4->SetParameter(3,-111.334);  fpol4->SetParameter(4,+14.5676); 
+// //     if(fabs_lep_eta<0.8) event.weight*=fpol3_1->Eval(fabs_lep_eta);
+// //     else{ 
+// //       if (fabs_lep_eta<1.55) event.weight*=fpol3_2->Eval(fabs_lep_eta);
+// //       else event.weight*=fpol4->Eval(fabs_lep_eta);
+// //     }
+
+//   // //2)MwT
+//   // //y = 0.686115 + 0.00098501$\cdot$x + 4.44785e-06$\cdot$x$^2$
+//   // TF1 *fpol2 = new TF1("fpol2","pol2",0,1000);
+//   // fpol2->SetParameter(0,0.686115);fpol2->SetParameter(1,0.00098501);fpol2->SetParameter(2,4.44785e-06);
+//   // //  std::cout<<"fpol2->Eval("<<MwT<<") = "<<fpol2->Eval(MwT)<<" "<<event.weight<<std::endl;
+//   // event.weight *=fpol2->Eval(MwT);
+//   // //  std::cout<<"new weight "<<event.weight<<std::endl;
+
+//   // //3)$\not E_{T}$
+//   //   //MET$\le$400: y =     0.80563  + 0.0010969$\cdot$x -3.03445e-05$\cdot$x$^2$ + 2.38617e-07$\cdot$x$^3$ -6.37889e-10$\cdot$x$^4$ +4.72175e-13$\cdot$x$^5$
+//   //   //MET>400:  y =    7268.53   -74.0394$\cdot$x +  0.300133$\cdot$x$^2$ -0.000605032$\cdot$x$^3$ + 6.06439e-07$\cdot$x$^4$ -2.4177e-10$\cdot$x$^5$
+//   //   TF1 *fpol5_1 = new TF1("fpol5_1","pol5",0,400.);
+//   //   fpol5_1->SetParameter(0,0.80563); fpol5_1->SetParameter(1,0.0010969); fpol5_1->SetParameter(2,-3.03445e-05); fpol5_1->SetParameter(3,2.38617e-07);
+//   //   fpol5_1->SetParameter(4,-6.37889e-10); fpol5_1->SetParameter(5,4.72175e-13); 
+//   //   TF1 *fpol5_2 = new TF1("fpol5_2","pol5",400.,4000.);
+//   //   fpol5_2->SetParameter(0,7268.53);      fpol5_2->SetParameter(1,-74.0394);      fpol5_2->SetParameter(2,0.300133); 
+//   //   fpol5_2->SetParameter(3,-0.000605032);      fpol5_2->SetParameter(4,6.06439e-07);      fpol5_2->SetParameter(5,-2.4177e-10); 
+//   //   if(met_pt<400)
+//   //     event.weight *=fpol5_1->Eval(met_pt);
+//   //   else
+//   //     event.weight *=fpol5_2->Eval(met_pt);
+
+//     //4)jet1 CSV
+//     //y = 0.866675 -1.16956$\cdot$x +17.9903$\cdot$x$^2$ -83.4937$\cdot$x$^3$ + 158.49$\cdot$x$^4$ -133.086$\cdot$x$^5$ +41.0062$\cdot$x$^6$
+//     TF1 *fpol6 = new TF1("fpol6","pol6",0.,1.1);
+//     fpol6->SetParameter(0,0.866675);  fpol6->SetParameter(1,-1.16956);  fpol6->SetParameter(2,17.9903);  
+//     fpol6->SetParameter(3,-83.4937);   
+//     fpol6->SetParameter(4,158.49);  fpol6->SetParameter(5,-133.086);  fpol6->SetParameter(6,41.0062); 
+//     event.weight *=fpol6->Eval(ljet_CSV);
+
+//     // //5)$\sum$ jet$_{i}$ p$_{T}$
+//     // //y =   1.485  -0.00378757$\cdot$x + 1.06641e-05$\cdot$x$^2$ -2.00092e-08$\cdot$x$^3$ +2.15771e-11$\cdot$x$^4$ -1.15388e-14$\cdot$x$^5$ +2.34261e-18$\cdot$x$^6$
+//     // TF1 *fpol6 = new TF1("fpol6","pol6",0.,2000.);
+//     // fpol6->SetParameter(0,1.485); fpol6->SetParameter(1,-0.00378757); fpol6->SetParameter(2,1.06641e-05);
+//     // fpol6->SetParameter(3,-2.00092e-08); fpol6->SetParameter(4,+2.15771e-11); fpol6->SetParameter(5,-1.15388e-14); fpol6->SetParameter(6,+2.34261e-18); 
+//     // event.weight *=fpol6->Eval(jets_pt);
+
+//     // //6)Log(lep p$_{T}$)
+//     // //y =    -387.37   + 405.032$\cdot$x -167.445$\cdot$x$^2$ +34.225$\cdot$x$^3$ -3.45604$\cdot$x$^4$ +0.137984$\cdot$x$^5$
+//     // TF1 *fpol5 = new TF1("fpol5","pol5",0.,10.);
+//     // fpol5->SetParameter(0,-387.37); fpol5->SetParameter(1,405.032); fpol5->SetParameter(2,-167.445);
+//     // fpol5->SetParameter(3,34.225); fpol5->SetParameter(4,-3.45604); fpol5->SetParameter(5,0.137984);
+//     // event.weight *=fpol5->Eval(log_lep_pt);
+
+//     //7)
+//   }
+//   //------------------------------------------------------------------------
+
+
+  // if(TMVA_response<0.9) return false;
+  // if(!event.isRealData)
+  //   if(log_dR_lep_cljet<=-1.8) event.weight*=1.5; //TEST for disagrement between data and QCD MC
+
+  varvariation->process(event);
   event.set(tt_ev_weight,event.weight);
 
+  //  HFolder("REWEIGHTED")->fill(event);
+  HFolder("REWEIGHTED")->fill(event);
+  HFolder("REWEIGHTED__ttbar")->fill(event);
   return true;
 }
 

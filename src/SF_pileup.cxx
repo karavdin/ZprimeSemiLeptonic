@@ -33,8 +33,10 @@ weightcalc_pileup::weightcalc_pileup(const std::string& pu_file_DATA, const std:
   if(!h_pileupDATA_->Integral(0,-1)) throw std::runtime_error("weightcalc_pileup::weightcalc_pileup -- null integral for DATA pileup histogram");
   if(!h_pileupMC_  ->Integral(0,-1)) throw std::runtime_error("weightcalc_pileup::weightcalc_pileup -- null integral for MC pileup histogram");
 
-  h_pileupDATA_->Scale(1./h_pileupDATA_->Integral(0,-1));
-  h_pileupMC_  ->Scale(1./h_pileupMC_  ->Integral(0,-1));
+  // h_pileupDATA_->Scale(1./h_pileupDATA_->Integral(0,-1));
+  // h_pileupMC_  ->Scale(1./h_pileupMC_  ->Integral(0,-1));
+  h_pileupDATA_->Scale(1./h_pileupDATA_->Integral()); //TEST
+  h_pileupMC_  ->Scale(1./h_pileupMC_  ->Integral()); //TEST
 }
 
 weightcalc_pileup::~weightcalc_pileup(){
