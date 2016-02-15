@@ -153,19 +153,19 @@ ZprimeSelectionModule::ZprimeSelectionModule(uhh2::Context& ctx){
     JEC_AK8 = JERFiles::Summer15_50ns_L123_AK8PFchs_DATA;
   }
 
-  jet_IDcleaner.reset(new JetCleaner(jetID));
+  jet_IDcleaner.reset(new JetCleaner(ctx,jetID,"jets"));
   jet_corrector.reset(new JetCorrector(ctx, JEC_AK4));
 //!!  jetER_smearer.reset(new JetResolutionSmearer(ctx));
   jetlepton_cleaner.reset(new JetLeptonCleaner(ctx, JEC_AK4));
   jetlepton_cleaner->set_drmax(.4);
-  jet_cleaner1.reset(new JetCleaner(25., uhh2::infinity));
-  jet_cleaner2.reset(new JetCleaner(30., 2.4));
+  jet_cleaner1.reset(new JetCleaner(ctx,25., uhh2::infinity,"jets"));
+  jet_cleaner2.reset(new JetCleaner(ctx,30., 2.4,"jets"));
 
-  topjet_IDcleaner.reset(new JetCleaner(jetID));
+  topjet_IDcleaner.reset(new JetCleaner(ctx,jetID,"jets"));
   topjet_corrector.reset(new TopJetCorrector(ctx, JEC_AK8));
 //!!  topjetER_smearer.reset(new TopJetResolutionSmearer(ctx));
   topjetlepton_cleaner.reset(new TopJetLeptonDeltaRCleaner(.8));
-  topjet_cleaner.reset(new TopJetCleaner(TopJetId(PtEtaCut(400., 2.4))));
+  topjet_cleaner.reset(new TopJetCleaner(ctx,TopJetId(PtEtaCut(400., 2.4)),"topjets"));
   ////
 
   //// EVENT SELECTION
@@ -177,16 +177,25 @@ ZprimeSelectionModule::ZprimeSelectionModule(uhh2::Context& ctx){
     lep1_sel->add<NMuonSelection>    ("muoN == 1", 1, 1);
     lep1_sel->add<NElectronSelection>("eleN == 0", 0, 0);
 
-    if(trigger != "NULL") trigger_sel = make_unique<TriggerSelection>(trigger);
-    else                  trigger_sel = make_unique<TriggerSelection>("HLT_Mu45_eta2p1_v*");
+    // if(trigger != "NULL") trigger_sel = make_unique<TriggerSelection>(trigger);
+    // else                  trigger_sel = make_unique<TriggerSelection>("HLT_Mu45_eta2p1_v*");
+    const std::string& trigger = ctx.get("trigger", "NULL");
+    if(trigger != "NULL") trigger_sel.reset(new TriggerSelection(trigger));
+    else                  trigger_sel.reset(new uhh2::AndSelection(ctx));
+
   }
   else if(channel_ == elec){
 
     lep1_sel->add<NMuonSelection>    ("muoN == 0", 0, 0);
     lep1_sel->add<NElectronSelection>("eleN == 1", 1, 1);
 
-    if(trigger != "NULL") trigger_sel = make_unique<TriggerSelection>(trigger);
-    else                  trigger_sel = make_unique<TriggerSelection>("HLT_Ele45_CaloIdVT_GsfTrkIdT_PFJet200_PFJet50_v*");
+    // if(trigger != "NULL") trigger_sel = make_unique<TriggerSelection>(trigger);
+    // else                  trigger_sel = make_unique<TriggerSelection>("HLT_Ele45_CaloIdVT_GsfTrkIdT_PFJet200_PFJet50_v*");
+
+    const std::string& trigger = ctx.get("trigger", "NULL");
+    if(trigger != "NULL") trigger_sel.reset(new TriggerSelection(trigger));
+    else                  trigger_sel.reset(new uhh2::AndSelection(ctx));
+
   }
 
   jet2_sel.reset(new NJetSelection(2, -1, JetId(PtEtaCut( 50., 2.4))));

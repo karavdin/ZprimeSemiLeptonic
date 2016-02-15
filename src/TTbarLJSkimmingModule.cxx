@@ -62,6 +62,8 @@ class TTbarLJSkimmingModule : public ModuleBASE {
   std::unique_ptr<uhh2::Selection> twodcut_sel;
 
   std::unique_ptr<uhh2::AnalysisModule> ttgenprod;
+  Event::Handle<float> tt_TMVA_response;// response of TMVA method, dummy value at this step
+
 };
 
 TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
@@ -169,18 +171,18 @@ TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
     JEC_AK8 = JERFiles::Summer15_25ns_L123_AK8PFchs_DATA;
   }
 
-  jet_IDcleaner.reset(new JetCleaner(jetID));
+  jet_IDcleaner.reset(new JetCleaner(ctx,jetID,"jets"));
   jet_corrector.reset(new JetCorrector(ctx, JEC_AK4));
 //!!  jetER_smearer.reset(new JetResolutionSmearer(ctx));
   jetlepton_cleaner.reset(new JetLeptonCleaner_by_KEYmatching(ctx, JEC_AK4));
-  jet_cleaner1.reset(new JetCleaner(15., 3.0));
-  jet_cleaner2.reset(new JetCleaner(30., 2.4));
+  jet_cleaner1.reset(new JetCleaner(ctx,15., 3.0, "jets"));
+  jet_cleaner2.reset(new JetCleaner(ctx,30., 2.4, "jets"));
 
-  topjet_IDcleaner.reset(new JetCleaner(jetID));
+  topjet_IDcleaner.reset(new JetCleaner(ctx,jetID,"jets"));
   topjet_corrector.reset(new TopJetCorrector(ctx, JEC_AK8));
 //!!  topjetER_smearer.reset(new TopJetResolutionSmearer(ctx));
   topjetlepton_cleaner.reset(new TopJetLeptonDeltaRCleaner(.8));
-  topjet_cleaner.reset(new TopJetCleaner(TopJetId(PtEtaCut(500., 2.4))));
+  topjet_cleaner.reset(new TopJetCleaner(ctx,TopJetId(PtEtaCut(500., 2.4)),"topjets"));
   ////
 
   //// EVENT SELECTION
@@ -210,9 +212,12 @@ TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
     book_HFolder(tag, new TTbarLJHists(ctx, tag));
   }
   ////
+
+  tt_TMVA_response = ctx.declare_event_output<float>("TMVA_response");
 }
 
 bool TTbarLJSkimmingModule::process(uhh2::Event& event){
+  event.set(tt_TMVA_response,0);//fill with dummy value
   // std::cout<<""<<std::endl;
   // std::cout<<"New event! "<<std::endl;
 

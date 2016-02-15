@@ -120,11 +120,11 @@ TagNProbeZLLModule::TagNProbeZLLModule(Context & ctx){
   jetER_smearer.reset(new JetResolutionSmearer(ctx));
   jetlepton_cleaner.reset(new JetLeptonCleaner(ctx, JERFiles::PHYS14_L123_MC));
   jetlepton_cleaner->set_drmax(.4);
-  jet_cleaner1.reset(new JetCleaner( 25., std::numeric_limits<double>::infinity()));
-  jet_cleaner2.reset(new JetCleaner( 30., 2.4));
-  jet_cleaner3.reset(new JetCleaner( 50., 2.4));
-  jet_cleaner4.reset(new JetCleaner(100., 2.4));
-  jet_cleaner5.reset(new JetCleaner(200., 2.4));
+  jet_cleaner1.reset(new JetCleaner(ctx,25., std::numeric_limits<double>::infinity(),"jets"));
+  jet_cleaner2.reset(new JetCleaner(ctx,30., 2.4,"jets"));
+  jet_cleaner3.reset(new JetCleaner(ctx,50., 2.4,"jets"));
+  jet_cleaner4.reset(new JetCleaner(ctx,100., 2.4,"jets"));
+  jet_cleaner5.reset(new JetCleaner(ctx,200., 2.4,"jets"));
   ////
 
   //// EVENT SELECTION

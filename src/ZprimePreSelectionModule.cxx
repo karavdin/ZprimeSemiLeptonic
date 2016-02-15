@@ -93,11 +93,11 @@ ZprimePreSelectionModule::ZprimePreSelectionModule(uhh2::Context& ctx){
   jet_corrector.reset(new JetCorrector(ctx, JEC_AK4));
   jetlepton_cleaner.reset(new JetLeptonCleaner(ctx, JEC_AK4));
   jetlepton_cleaner->set_drmax(.4);
-  jet_cleaner.reset(new JetCleaner(30., 2.4));
+  jet_cleaner.reset(new JetCleaner(ctx,30., 2.4,"jets"));
 
   topjet_corrector.reset(new TopJetCorrector(ctx, JEC_AK8));
   topjetlepton_cleaner.reset(new TopJetLeptonDeltaRCleaner(.8));
-  topjet_cleaner.reset(new TopJetCleaner(TopJetId(PtEtaCut(200., 2.4))));
+  topjet_cleaner.reset(new TopJetCleaner(ctx,TopJetId(PtEtaCut(200., 2.4))));
 
   // set up selections
   muo1_sel.reset(new NMuonSelection(1));      // at least 1 muon
