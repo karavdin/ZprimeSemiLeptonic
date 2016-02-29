@@ -425,11 +425,11 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
 
   for(const auto& tag : htags_4){
 
-    // book_HFolder(tag          , new TTbarLJHists      (ctx, tag          , ttag_ID_, ttag_minDR_jet_));
-    // book_HFolder(tag+"__ttbar", new EffyTTbarRECOHists(ctx, tag+"__ttbar", ttbar_gen_label, ttbar_hyps_label, ttbar_chi2_label));
+    book_HFolder(tag          , new TTbarLJHists      (ctx, tag          , ttag_ID_, ttag_minDR_jet_));
+    book_HFolder(tag+"__ttbar", new EffyTTbarRECOHists(ctx, tag+"__ttbar", ttbar_gen_label, ttbar_hyps_label, ttbar_chi2_label));
 
-    book_HFolder(tag          , new TTbarLJHists      (ctx, tag));
-    book_HFolder(tag+"__ttbar", new EffyTTbarRECOHists(ctx, tag+"__ttbar"));
+    // book_HFolder(tag          , new TTbarLJHists      (ctx, tag));
+    // book_HFolder(tag+"__ttbar", new EffyTTbarRECOHists(ctx, tag+"__ttbar"));
   }
   //
 
@@ -479,10 +479,9 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
   ttagSF_dnT.reset(new weightcalc_ttagging(ttag_SFac_file, ttag_wp, "comb", "comb", "CT", "DN", ttag_effy_file, ttag_effyL, ttag_effyT));
   //
 
-  // MVA vars variations
-  const std::string& reweight_MC_file = ctx.get("reweight_file");
-
-  varvariation.reset(new MCVarReweight(ctx));
+  // // MVA vars variations
+  // const std::string& reweight_MC_file = ctx.get("reweight_file");
+  // varvariation.reset(new MCVarReweight(ctx));
   ////
 
   //// VARS
@@ -677,7 +676,8 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
 
     ttgenprod->process(event);
   }
-
+  // int testCount=0;
+  //  std::cout<<"Test #"<<testCount++<<std::endl;
   //// Data/MC scale factors
 
   float w_GEN(1.);
@@ -686,6 +686,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   float w_ttagSF_ct(1.), w_ttagSF_upL(1.), w_ttagSF_dnL(1.), w_ttagSF_upT(1.), w_ttagSF_dnT(1.);
   float w_muR_ct__muF_up(1.), w_muR_ct__muF_dn(1.), w_muR_up__muF_ct(1.), w_muR_up__muF_up(1.), w_muR_dn__muF_ct(1.), w_muR_dn__muF_dn(1.);
 
+  //  std::cout<<"Test #"<<testCount++<<std::endl;
   if(!event.isRealData){
 
     w_GEN = event.weight;
@@ -740,6 +741,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
     event.weight *= w_ttagSF_ct;
     //
   }
+  //  std::cout<<"Test #"<<testCount++<<std::endl;
   //
   //  std::cout<<"Now let's go to lepton selection "<<std::endl;
   ////
@@ -760,7 +762,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
 
   ////
 
-
+  //  std::cout<<"Test #"<<testCount++<<std::endl;
   //TEST: Check classification vs chi2 for QCD studies
   //if((event.electrons->at(0)).Class()!=2) return false;//2 = BadTrk
   // if((event.electrons->at(0)).Class()!=3) return false;//3 = Shower
@@ -777,9 +779,10 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   const bool pass_jet1 = jet1_sel->passes(event);
   if(!pass_jet1) return false;
   if(lepN == 1) HFolder("jet1")->fill(event);
+  //  std::cout<<"Test #"<<testCount++<<std::endl;
 
   ////
-
+  //  std::cout<<"Test #"<<testCount++<<std::endl;
   //// HLT selection
   const bool pass_trigger = trigger_sel->passes(event);
   if(!pass_trigger) return false;
@@ -799,7 +802,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   if(!pass_htlep) return false;
   if(lepN == 1) HFolder("htlep")->fill(event);
   ////
-
+  //  std::cout<<"Test #"<<testCount++<<std::endl;
 
 
   //TEST: no TRIANGULAR-CUTS for QCD suppression studies!
@@ -813,7 +816,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
 
   /* TOPTAG-EVENT boolean */
   const bool pass_ttagevt = ttagevt_sel->passes(event) && use_ttagging_;
-
+  //  std::cout<<"Test #"<<testCount++<<std::endl;
   const std::string ttag_posx = (pass_ttagevt ? "t1" : "t0");
 
   //  std::cout<<"Now let's go to reco_primlep "<<std::endl;
@@ -955,7 +958,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   event.set(h_muoN , event.muons    ->size());
   event.set(h_eleN , event.electrons->size());
 
-  // std::cout<<"Now let's set tags! "<<std::endl;
+  //  std::cout<<"Now let's set tags! "<<std::endl;
 
   int ttagN(0);
   for(const auto& tj : *event.topjets) if(ttag_ID_(tj, event)) ++ttagN;
@@ -966,7 +969,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   event.set(h_ttagevt, pass_ttagevt);
   //
 
-  // std::cout<<"Now let's set leptons! "<<std::endl;
+  //  std::cout<<"Now let's set leptons! "<<std::endl;
 
   // lepton
   const Particle* lep1 = leading_lepton(event);
@@ -976,6 +979,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
     if     (channel_ == muon) lep2 = &((lep1 == &event.muons    ->at(0)) ? event.muons    ->at(1) : event.muons    ->at(0));
     else if(channel_ == elec) lep2 = &((lep1 == &event.electrons->at(0)) ? event.electrons->at(1) : event.electrons->at(0));
   }
+  //  std::cout<<"Test #"<<testCount++<<std::endl;
 
   TLorentzVector lep1__p4(0.,0.,0.,0.), lep2__p4(0.,0.,0.,0.);
   int   lep1__pdgID(0), lep1__charge(0), lep2__pdgID(0), lep2__charge(0);
@@ -1001,7 +1005,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
     //    std::cout<<"... I mean electrons ;)"<<std::endl;
     lep1__pdgID     = lep1->charge() * -11;
     lep1__charge    = lep1->charge();
-    //     std::cout<<"... I mean all tags and stuff... "<<Electron::twodcut_dRmin<<" "<<Electron::twodcut_pTrel<<std::endl;
+    //    std::cout<<"... I mean all tags and stuff... "<<Electron::twodcut_dRmin<<" "<<Electron::twodcut_pTrel<<std::endl;
     lep1__minDR_jet = ((Electron*) lep1)->get_tag(Electron::twodcut_dRmin);
     lep1__pTrel_jet = ((Electron*) lep1)->get_tag(Electron::twodcut_pTrel);
 
@@ -1146,7 +1150,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   }
 
 
- 
+  //  std::cout<<"Test #"<<testCount++<<std::endl; 
   const ReconstructionHypothesis* rec_ttbar_ = get_best_hypothesis(ttbar_hyps, "Chi2");
   rec_ttbar_M_ = ((rec_ttbar_->top_v4()+rec_ttbar_->antitop_v4()).M());
   event.set(tt_mttbar,rec_ttbar_M_);
@@ -1238,13 +1242,14 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
   // if(TMVA_response<0.9) return false;
   // if(!event.isRealData)
   //   if(log_dR_lep_cljet<=-1.8) event.weight*=1.5; //TEST for disagrement between data and QCD MC
-
-  varvariation->process(event);
+  //  std::cout<<"Test #"<<testCount++<<std::endl;
+  // varvariation->process(event);
   event.set(tt_ev_weight,event.weight);
 
   //  HFolder("REWEIGHTED")->fill(event);
   HFolder("REWEIGHTED")->fill(event);
   HFolder("REWEIGHTED__ttbar")->fill(event);
+  //  std::cout<<"Test #"<<testCount++<<std::endl;
   return true;
 }
 

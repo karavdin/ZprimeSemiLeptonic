@@ -28,7 +28,7 @@ void TTbarLJHists::init(){
   // PV
   book_TH1F("pvN", 120, 0, 120);
 
-  /* // MUON
+  // MUON
   book_TH1F("muoN"                 , 20, 0, 20);
 
   book_TH1F("muo1__charge"         , 5, -2, 3);
@@ -57,7 +57,7 @@ void TTbarLJHists::init(){
   book_TH1F("muo2__minDR_topjet"   , 60, 0, 6);
   book_TH2F("muo2__minDR_jet__vs__muo2__pTrel_jet", 60, 0, 6, 100, 0, 500);
   book_TH2F("muo2__pt__vs__met__pt", 360, 0, 1800, 180, 0, 1800);
-  book_TH2F("muo2__pTrel_jet__vs__met__pt", 100, 0, 500, 180, 0, 1800); */
+  book_TH2F("muo2__pTrel_jet__vs__met__pt", 100, 0, 500, 180, 0, 1800);
 
   // ELECTRON
   book_TH1F("eleN"                 , 20, 0, 20);
@@ -94,19 +94,19 @@ void TTbarLJHists::init(){
 
 
   // //electrons classified according to CMS-EGM-13-001
-  // book_TH1F("ele1__eta_Gold",180,-3,3);
-  // book_TH1F("ele1__eta_BigBrem",180,-3,3);
-  // book_TH1F("ele1__eta_Shower",180,-3,3);
-  // book_TH1F("ele1__eta_BadTrk",180,-3,3);
-  // book_TH1F("ele1__eta_Gap",180,-3,3);
-  // book_TH1F("ele1__eta_Unknown",180,-3,3);
+  book_TH1F("ele1__eta_Gold",180,-3,3);
+  book_TH1F("ele1__eta_BigBrem",180,-3,3);
+  book_TH1F("ele1__eta_Shower",180,-3,3);
+  book_TH1F("ele1__eta_BadTrk",180,-3,3);
+  book_TH1F("ele1__eta_Gap",180,-3,3);
+  book_TH1F("ele1__eta_Unknown",180,-3,3);
 
-  // book_TH1F("ele2__eta_Gold",180,-3,3);
-  // book_TH1F("ele2__eta_BigBrem",180,-3,3);
-  // book_TH1F("ele2__eta_Shower",180,-3,3);
-  // book_TH1F("ele2__eta_BadTrk",180,-3,3);
-  // book_TH1F("ele2__eta_Gap",180,-3,3);
-  // book_TH1F("ele2__eta_Unknown",180,-3,3);
+  book_TH1F("ele2__eta_Gold",180,-3,3);
+  book_TH1F("ele2__eta_BigBrem",180,-3,3);
+  book_TH1F("ele2__eta_Shower",180,-3,3);
+  book_TH1F("ele2__eta_BadTrk",180,-3,3);
+  book_TH1F("ele2__eta_Gap",180,-3,3);
+  book_TH1F("ele2__eta_Unknown",180,-3,3);
 
   // book_TH1F("ele1__N_SCclusters",10,0,10);//Number of clusters in Super Cluster
   // book_TH1F("ele2__N_SCclusters",10,0,10);
@@ -130,20 +130,20 @@ void TTbarLJHists::init(){
   // book_TH2F("ele2__pt_HEEP",80, 0, 800, 20,0,1);//standart HEEP tag (with isolation cuts)
 
   // //VARs for HEEP electron ID w/t isolation cuts
-  // book_TH1F("ele1__isEcalDriven",3,0,2);
-  // book_TH1F("ele1__dxy",100,-10,10);
-  // book_TH1F("ele1__dEtaInSeed",180,-3,3);
-  // //ToDo: change to ratio of values as used in HEEP!
-  // book_TH1F("ele1__full5x5_e1x5",1000,0,1000);
-  // book_TH1F("ele1__full5x5_e5x5",1000,0,1000);
-  // book_TH1F("ele1__full5x5_e2x5Max",1000,0,1000);
+  book_TH1F("ele1__isEcalDriven",3,0,2);
+  book_TH1F("ele1__dxy",100,-10,10);
+  book_TH1F("ele1__dEtaInSeed",180,-3,3);
+  //ToDo: change to ratio of values as used in HEEP!
+  book_TH1F("ele1__full5x5_e1x5",1000,0,1000);
+  book_TH1F("ele1__full5x5_e5x5",1000,0,1000);
+  book_TH1F("ele1__full5x5_e2x5Max",1000,0,1000);
 
-  // book_TH1F("ele2__isEcalDriven",3,0,2);
-  // book_TH1F("ele2__dxy",100,-10,10);
-  // book_TH1F("ele2__dEtaInSeed",180,-3,3);
-  // book_TH1F("ele2__full5x5_e1x5",1000,0,1000);
-  // book_TH1F("ele2__full5x5_e5x5",1000,0,1000);
-  // book_TH1F("ele2__full5x5_e2x5Max",1000,0,1000);
+  book_TH1F("ele2__isEcalDriven",3,0,2);
+  book_TH1F("ele2__dxy",100,-10,10);
+  book_TH1F("ele2__dEtaInSeed",180,-3,3);
+  book_TH1F("ele2__full5x5_e1x5",1000,0,1000);
+  book_TH1F("ele2__full5x5_e5x5",1000,0,1000);
+  book_TH1F("ele2__full5x5_e2x5Max",1000,0,1000);
 
   book_TH2F("ele1__pt_eta",40, 0, 800,60, -3, 3);
   book_TH2F("ele2__pt_eta",40, 0, 800,60, -3, 3);
@@ -275,11 +275,11 @@ void TTbarLJHists::fill(const uhh2::Event& event){
 
   const float weight(event.weight);
   H1("wgt")->Fill(weight);
-
+  //  std::cout<<"Message from Hist: weight="<<weight<<std::endl;
   // PV
   H1("pvN")->Fill(event.pvs->size(), weight);
 
-  /* // MUON
+   // MUON
   const int muoN(event.muons->size());
   H1("muoN")->Fill(muoN, weight);
 
@@ -322,7 +322,7 @@ void TTbarLJHists::fill(const uhh2::Event& event){
 
     H1("muo"+std::to_string(i+1)+"__minDR_topjet")->Fill(minDR_topjet, weight);
   }
-  */
+  
   // ELECTRON
   const int eleN(event.electrons->size());
   H1("eleN")->Fill(eleN, weight);
@@ -376,7 +376,7 @@ void TTbarLJHists::fill(const uhh2::Event& event){
     // H2("ele"+std::to_string(i+1)+"__eta_HEEP")->Fill(p.eta(), p.get_tag(p.tagname2tag("heepElectronID_HEEPV60")), weight);
     // H2("ele"+std::to_string(i+1)+"__pt_HEEP")->Fill(p.pt(), p.get_tag(p.tagname2tag("heepElectronID_HEEPV60")), weight);
 
-    /* new vars in ntuples
+    // new vars in ntuples
     int EMclass= p.Class();
     if(EMclass==-1) H1("ele"+std::to_string(i+1)+"__eta_Unknown")->Fill(p.eta(), weight);
     if(EMclass==0) H1("ele"+std::to_string(i+1)+"__eta_Gold")->Fill(p.eta(), weight);
@@ -391,7 +391,7 @@ void TTbarLJHists::fill(const uhh2::Event& event){
     H1("ele"+std::to_string(i+1)+"__dEtaInSeed")->Fill(p.dEtaInSeed(),weight);
     H1("ele"+std::to_string(i+1)+"__full5x5_e1x5")->Fill(p.full5x5_e1x5(),weight);
     H1("ele"+std::to_string(i+1)+"__full5x5_e5x5")->Fill(p.full5x5_e5x5(),weight);
-    H1("ele"+std::to_string(i+1)+"__full5x5_e2x5Max")->Fill(p.full5x5_e2x5Max(),weight); */
+    H1("ele"+std::to_string(i+1)+"__full5x5_e2x5Max")->Fill(p.full5x5_e2x5Max(),weight); 
   }
   if(eleN>0){
     const Particle *lep = &event.electrons->at(0);//ToDo: extend for case with muon(s)  in final state;
@@ -408,7 +408,7 @@ void TTbarLJHists::fill(const uhh2::Event& event){
       lep__vtxXY->Fill(hypot((event.electrons->at(0)).gsfTrack_vx(),(event.electrons->at(0)).gsfTrack_vy()), weight);
       lep__vtxXY_trans->Fill(log(fabs(hypot((event.electrons->at(0)).gsfTrack_vx(),(event.electrons->at(0)).gsfTrack_vy())-0.1216)), weight);
       
-   }
+    }
    //the closest to lepton jet
    // find jet with smallest angle to lepton (the closest jet to lepton)
    int jet_pos = 0;
@@ -442,7 +442,7 @@ void TTbarLJHists::fill(const uhh2::Event& event){
    Mt__lep_met->Fill(MwT, weight);
   }
 
-
+  //  std::cout<<"Message from Hist: jetN="<<event.jets->size()<<std::endl;
   // JET
   int jetN(event.jets->size());
   int jetN__pt030_eta2p4(0);
@@ -472,7 +472,7 @@ void TTbarLJHists::fill(const uhh2::Event& event){
     H1("jet"+std::to_string(i+1)+"__M")  ->Fill(p.v4().M()                      , weight);
     H1("jet"+std::to_string(i+1)+"__CSV")->Fill(p.btag_combinedSecondaryVertex(), weight);
   }
-
+  //  std::cout<<"Message from Hist: AGAIN jetN="<<jetN<<std::endl;
   H1("jetN")              ->Fill(jetN              , weight);
   H1("jetN__pt030_eta2p4")->Fill(jetN__pt030_eta2p4, weight);
   H1("jetN__pt050_eta2p4")->Fill(jetN__pt050_eta2p4, weight);
@@ -481,12 +481,20 @@ void TTbarLJHists::fill(const uhh2::Event& event){
   H1("jetN__pt200_eta2p4")->Fill(jetN__pt200_eta2p4, weight);
   H1("jetN__pt250_eta2p4")->Fill(jetN__pt250_eta2p4, weight);
   H1("jetN__pt")->Fill(jets_pt,weight);
-  log_jets_pt_lep_pt->Fill(log(jets_pt/(event.electrons->at(0)).pt()),weight);
+  if(eleN>0) log_jets_pt_lep_pt->Fill(log(jets_pt/(event.electrons->at(0)).pt()),weight);
 
   std::vector<float> jets_CSV;
   jets_CSV.reserve(event.jets->size());
-  for(const auto& j : *event.jets) jets_CSV.push_back(j.btag_combinedSecondaryVertex());
+  for(const auto& j : *event.jets){ 
+  // for(int i=0; i<jetN; ++i){
+  //   const Jet& j = event.jets->at(i);
+    // std::cout<<"Message from Hist: j(i)"<<i<<std::endl;
+    // std::cout<<"Message from Hist: j.btag_combinedSecondaryVertex()="<<j.btag_combinedSecondaryVertex()<<std::endl;
+    jets_CSV.push_back(j.btag_combinedSecondaryVertex());
+  }
   std::sort(jets_CSV.begin(), jets_CSV.end(), [](const float s1, const float s2){return s1 > s2;});
+
+  //  std::cout<<"Message from Hist: jets_CSV="<<jets_CSV.size()<<std::endl;
 
   int jetN__CSVL(0), jetN__CSVM(0), jetN__CSVT(0);
   for(unsigned int i=0; i<jets_CSV.size(); ++i){
@@ -510,7 +518,7 @@ void TTbarLJHists::fill(const uhh2::Event& event){
   //
 
 
-
+  //  std::cout<<"Message from Hist: TopjetN="<<event.topjets->size()<<std::endl;
   // TOPJET
   const int topjetN(event.topjets->size());
   H1("topjetN")->Fill(topjetN, weight);

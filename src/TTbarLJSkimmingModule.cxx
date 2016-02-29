@@ -162,13 +162,17 @@ TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
   std::vector<std::string> JEC_AK4, JEC_AK8;
   if(isMC){
 
-    JEC_AK4 = JERFiles::Summer15_25ns_L123_AK4PFchs_MC;
-    JEC_AK8 = JERFiles::Summer15_25ns_L123_AK8PFchs_MC;
+    // JEC_AK4 = JERFiles::Summer15_25ns_L123_AK4PFchs_MC;
+    // JEC_AK8 = JERFiles::Summer15_25ns_L123_AK8PFchs_MC;
+    JEC_AK4 = JERFiles::Fall15_25ns_L123_AK4PFchs_MC;
+    JEC_AK8 = JERFiles::Fall15_25ns_L123_AK8PFchs_MC;
   }
   else {
 
-    JEC_AK4 = JERFiles::Summer15_25ns_L123_AK4PFchs_DATA;
-    JEC_AK8 = JERFiles::Summer15_25ns_L123_AK8PFchs_DATA;
+    // JEC_AK4 = JERFiles::Summer15_25ns_L123_AK4PFchs_DATA;
+    // JEC_AK8 = JERFiles::Summer15_25ns_L123_AK8PFchs_DATA;
+    JEC_AK4 = JERFiles::Fall15_25ns_L123_AK4PFchs_DATA;
+    JEC_AK8 = JERFiles::Fall15_25ns_L123_AK8PFchs_DATA;
   }
 
   jet_IDcleaner.reset(new JetCleaner(ctx,jetID,"jets"));
@@ -219,7 +223,7 @@ TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
 bool TTbarLJSkimmingModule::process(uhh2::Event& event){
   event.set(tt_TMVA_response,0);//fill with dummy value
   // std::cout<<""<<std::endl;
-  // std::cout<<"New event! "<<std::endl;
+  // std::cout<<"New event! #"<<event.event<<std::endl;
 
   //// COMMON MODULES
 
@@ -251,16 +255,17 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
 
   eleSR_cleaner->process(event);
   sort_by_pt<Electron>(*event.electrons);
-  //  std::cout<<"event.electrons->size() = "<<event.electrons->size()<<std::endl;
+  // std::cout<<"event.electrons->size() = "<<event.electrons->size()<<std::endl;
   const bool pass_lep1 = ((event.muons->size() >= 1) || (event.electrons->size() >= 1));
   if(!pass_lep1) return false;
-  //std::cout<<"Electrons are sorted!"<<std::endl;
+  //  std::cout<<"Electrons are sorted!"<<std::endl;
   HFolder("lep1")->fill(event);
   ////
 
   //// JET selection
-
+  //std::cout<<"Jets are going to be cleaned!"<<std::endl;
   jet_IDcleaner->process(event);
+  // std::cout<<"Jets are cleaned!"<<std::endl;
   jet_corrector->process(event);
 //!!  jetER_smearer->process(event);
   jetlepton_cleaner->process(event);
@@ -280,27 +285,27 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
 
   jet_cleaner2->process(event);
   sort_by_pt<Jet>(*event.jets);
-  // std::cout<<"Jets are sorted again! "<<event.jets->size()<<std::endl;
+  //  std::cout<<"Jets are sorted again! "<<event.jets->size()<<std::endl;
 
   /* 2nd AK4 jet selection */
   const bool pass_jet2 = jet2_sel->passes(event);
   if(!pass_jet2) return false;
   HFolder("jet2")->fill(event);
-  // std::cout<<"pass_jet2!"<<std::endl;
+  //  std::cout<<"pass_jet2!"<<std::endl;
 
   /* 1st AK4 jet selection */
   const bool pass_jet1 = jet1_sel->passes(event);
   if(!pass_jet1) return false;
   HFolder("jet1")->fill(event);
   ////
-  // std::cout<<"pass_jet1!"<<std::endl;
+  //  std::cout<<"pass_jet1!"<<std::endl;
 
   //// MET selection
   const bool pass_met = met_sel->passes(event);
   if(!pass_met) return false;
   HFolder("met")->fill(event);
   ////
-  // std::cout<<"PASS MET"<<std::endl;
+  //  std::cout<<"PASS MET"<<std::endl;
 
 
   //// HT_lep selection
@@ -308,10 +313,10 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
   if(!pass_htlep) return false;
   HFolder("htlep")->fill(event);
   ////
-  // std::cout<<"PASS HT_lep"<<std::endl;
+  //  std::cout<<"PASS HT_lep"<<std::endl;
 
 
- /* lepton-2Dcut variables */
+  /* lepton-2Dcut variables */
   const bool pass_twodcut = twodcut_sel->passes(event); {
 
     for(auto& muo : *event.muons){
@@ -333,7 +338,7 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
       ele.set_tag(Electron::twodcut_pTrel, pTrel);
     }
   }
-  if(!pass_twodcut) std::cout<<"event did not pass 2D cut, but we don't care right now "<<std::endl;
+  //if(!pass_twodcut) std::cout<<"event did not pass 2D cut, but we don't care right now "<<std::endl;
   //   TEST: no 2D cut for QCD suppression studies
  //  //// LEPTON-2Dcut selection
  //  // if(!pass_twodcut) std::cout<<"XMMMM Not pass 2D cut"<<std::endl;
@@ -342,7 +347,7 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
  //  HFolder("twodcut")->fill(event);
  //  ////
 
-  // std::cout<<"We made it! =)"<<std::endl;
+  //  std::cout<<"We made it! =)"<<std::endl;
   return true;
 }
 
