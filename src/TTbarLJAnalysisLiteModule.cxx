@@ -171,6 +171,7 @@ class TTbarLJAnalysisLiteModule : public ModuleBASE {
   Event::Handle<float> tt_lep_fbrem;//fraction of energy loss due to bremsstrahlung. !cation: in 8TeV was well modeled only for |eta|<1.44
   Event::Handle<float> tt_met_pt;//MET pt
   Event::Handle<float> tt_ljet_pt;//jet pt (for the leading jet)
+  Event::Handle<float> tt_cjet_pt;//jet pt (for the close to lepton jet)
   Event::Handle<float> tt_lep_pt_ljet;// lepton Pt to the leading jet axis
   Event::Handle<float> tt_dR_cljet_ljet;//distance in eta-phi between close jet  and leading jet
   Event::Handle<float> tt_dR_lep_cljet;// distance between lepton and the closest not leading jet in eta-phi
@@ -185,6 +186,7 @@ class TTbarLJAnalysisLiteModule : public ModuleBASE {
   float met_pt;//MET
   float lep_pt, lep_eta, fabs_lep_eta;//lepton
   float ljet_pt;//leading jet 
+  float cjet_pt;//close to the lepton jet 
   float lep_xy; //x^2+y^2 vertex of the lepton
   float lep_fbrem; 
   float MwT;// Transversal mass
@@ -558,7 +560,7 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
   ////
 
   ///Homemade ttbar MVA input
-  met_pt = 0; ljet_pt = 0;
+  met_pt = 0; ljet_pt = 0; cjet_pt = 0;
   lep_pt = 0; lep_eta = 0; fabs_lep_eta = 0;
   lep_xy = 0; lep_fbrem = 0;
   MwT = 0; lep_pt_ljet = 0;
@@ -576,6 +578,7 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
   tt_lep_pt = ctx.declare_event_output<float>("lep_pt");
   tt_lep_eta = ctx.declare_event_output<float>("lep_eta");
   tt_ljet_pt = ctx.declare_event_output<float>("ljet_pt");
+  tt_cjet_pt = ctx.declare_event_output<float>("cjet_pt");
   tt_lep_xy = ctx.declare_event_output<float>("lep_xy");
   tt_lep_fbrem = ctx.declare_event_output<float>("lep_fbrem");
   tt_MwT = ctx.declare_event_output<float>("MwT");
@@ -1107,8 +1110,8 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
     event.set(tt_lep_xy,lep_xy);
     log_lep_xy_corr = log(lep_xy-0.121540);
     lep_fbrem = lep->fbrem();
-    event.set(tt_lep_fbrem,lep_fbrem);
-   
+    event.set(tt_lep_fbrem,lep_fbrem);//f_brem = (Pin-Pout)/Pin where Pin, Pout - electron momentum in and out of the tracker
+    if(lep_fbrem<-0.2) return false;
 
     //the closest to lepton jet
     // find jet with smallest angle to lepton (the closest jet to lepton)
@@ -1129,6 +1132,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
     event.set(tt_jets_pt,jets_pt);
     jets_pt_to_lep_pt = log(jets_pt/lep_pt);
     const Particle*  jet0 =  &event.jets->at(jet_pos); 
+    event.set(tt_cjet_pt,jet0->pt());
     //leading jet
     const Jet* jet1 = &event.jets->at(0);
     ljet_pt = jet1->pt();
@@ -1136,7 +1140,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
     log_met_pt_to_ljet_pt = log(met_pt/ljet_pt);
     event.set(tt_ljet_pt, ljet_pt);
     ljet_CSV = jet1->btag_combinedSecondaryVertex();
-    if(fabs(ljet_CSV)>1.5) return false;
+    // if(fabs(ljet_CSV)>1.5) return false;
     event.set(tt_ljet_CSV,ljet_CSV);
     log_ljet_CSV_ljet_pt = log(ljet_CSV/ljet_pt);
     lep_pt_ljet = pTrel(*lep, jet1);

@@ -23,6 +23,8 @@
 #include <UHH2/ZprimeSemiLeptonic/include/ZprimeSemiLeptonicUtils.h>
 #include <UHH2/ZprimeSemiLeptonic/include/TTbarLJHists.h>
 
+#include <UHH2/common/include/LuminosityHists.h>
+
 class TTbarLJSkimmingModule : public ModuleBASE {
 
  public:
@@ -108,11 +110,14 @@ TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
 
   if(!isMC) lumi_sel.reset(new LumiSelection(ctx));
 
+
   /* MET filters */
   metfilters_sel.reset(new uhh2::AndSelection(ctx, "metfilters"));
   metfilters_sel->add<TriggerSelection>("1-good-vtx", "Flag_goodVertices");
   metfilters_sel->add<TriggerSelection>("eeBadSc"   , "Flag_eeBadScFilter");
   /***************/
+
+
 
   /* GEN M-ttbar selection [TTbar MC "0.<M^{gen}_{ttbar}(GeV)<700.] */
   const std::string ttbar_gen_label ("ttbargen");
@@ -218,6 +223,10 @@ TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
   ////
 
   tt_TMVA_response = ctx.declare_event_output<float>("TMVA_response");
+
+  book_HFolder("LuminosityHists", new LuminosityHists(ctx,"LuminosityHists"));
+  book_HFolder("LuminosityHists_metfilter", new LuminosityHists(ctx,"LuminosityHists_metfilter"));
+  book_HFolder("LuminosityHists_lepsel", new LuminosityHists(ctx,"LuminosityHists_lepsel"));
 }
 
 bool TTbarLJSkimmingModule::process(uhh2::Event& event){
@@ -240,13 +249,17 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
 
   /* luminosity sections from CMS JSON file */
   if(event.isRealData && !lumi_sel->passes(event)) return false;
-
+  if(event.isRealData)
+    HFolder("LuminosityHists")->fill(event);
 
   /* MET filters */
   if(!metfilters_sel->passes(event)) return false;
 
   ////
 
+  HFolder("met")->fill(event);
+  if(event.isRealData)
+    HFolder("LuminosityHists_metfilter")->fill(event);
   //// LEPTON selection
   
   muoSR_cleaner->process(event);
@@ -260,6 +273,9 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
   if(!pass_lep1) return false;
   //  std::cout<<"Electrons are sorted!"<<std::endl;
   HFolder("lep1")->fill(event);
+  if(event.isRealData)
+    HFolder("LuminosityHists_lepsel")->fill(event);
+  
   ////
 
   //// JET selection
@@ -338,7 +354,7 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
       ele.set_tag(Electron::twodcut_pTrel, pTrel);
     }
   }
-  //if(!pass_twodcut) std::cout<<"event did not pass 2D cut, but we don't care right now "<<std::endl;
+  if(!pass_twodcut) std::cout<<"event did not pass 2D cut, but we don't care right now "<<std::endl;
   //   TEST: no 2D cut for QCD suppression studies
  //  //// LEPTON-2Dcut selection
  //  // if(!pass_twodcut) std::cout<<"XMMMM Not pass 2D cut"<<std::endl;

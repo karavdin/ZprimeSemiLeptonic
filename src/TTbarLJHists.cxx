@@ -129,28 +129,28 @@ void TTbarLJHists::init(){
   // book_TH2F("ele2__eta_HEEP",180, -3, 3, 20,0,1); //standart HEEP tag (with isolation cuts)
   // book_TH2F("ele2__pt_HEEP",80, 0, 800, 20,0,1);//standart HEEP tag (with isolation cuts)
 
-  // //VARs for HEEP electron ID w/t isolation cuts
-  book_TH1F("ele1__isEcalDriven",3,0,2);
-  book_TH1F("ele1__dxy",100,-10,10);
-  book_TH1F("ele1__dEtaInSeed",180,-3,3);
-  //ToDo: change to ratio of values as used in HEEP!
-  book_TH1F("ele1__full5x5_e1x5",1000,0,1000);
-  book_TH1F("ele1__full5x5_e5x5",1000,0,1000);
-  book_TH1F("ele1__full5x5_e2x5Max",1000,0,1000);
+  // // //VARs for HEEP electron ID w/t isolation cuts
+  // book_TH1F("ele1__isEcalDriven",3,0,2);
+  // book_TH1F("ele1__dxy",100,-10,10);
+  // book_TH1F("ele1__dEtaInSeed",180,-3,3);
+  // //ToDo: change to ratio of values as used in HEEP!
+  // book_TH1F("ele1__full5x5_e1x5",1000,0,1000);
+  // book_TH1F("ele1__full5x5_e5x5",1000,0,1000);
+  // book_TH1F("ele1__full5x5_e2x5Max",1000,0,1000);
 
-  book_TH1F("ele2__isEcalDriven",3,0,2);
-  book_TH1F("ele2__dxy",100,-10,10);
-  book_TH1F("ele2__dEtaInSeed",180,-3,3);
-  book_TH1F("ele2__full5x5_e1x5",1000,0,1000);
-  book_TH1F("ele2__full5x5_e5x5",1000,0,1000);
-  book_TH1F("ele2__full5x5_e2x5Max",1000,0,1000);
+  // book_TH1F("ele2__isEcalDriven",3,0,2);
+  // book_TH1F("ele2__dxy",100,-10,10);
+  // book_TH1F("ele2__dEtaInSeed",180,-3,3);
+  // book_TH1F("ele2__full5x5_e1x5",1000,0,1000);
+  // book_TH1F("ele2__full5x5_e5x5",1000,0,1000);
+  // book_TH1F("ele2__full5x5_e2x5Max",1000,0,1000);
 
   book_TH2F("ele1__pt_eta",40, 0, 800,60, -3, 3);
   book_TH2F("ele2__pt_eta",40, 0, 800,60, -3, 3);
 
 
   //vars planned to be used in Homemade MVA for QCD suppression
-  lep__fbrem = book<TH1F>("lep__fbrem", "lep fbrem;lep fbrem", 100, -2, 3);
+  lep__fbrem = book<TH1F>("lep__fbrem", "lep fbrem;lep fbrem", 22, -0.2, 2);
   lep__DR_jet0 = book<TH1F>("ele__DR_jet0", "#DeltaR(e, jet0);#DeltaR(e, jet0)", 80, 0, 4.);
   log_lep__DR_jet0 = book<TH1F>("log_ele__DR_jet0", "Log(#DeltaR(e, jet0));Log(#DeltaR(e, jet0))", 50, -10, 10);
   jet0__DR_jet1 = book<TH1F>("jet0__DR_jet1", "#DeltaR(jet0, jet1);#DeltaR(jet0, jet1)", 80, 0, 4.);
@@ -384,14 +384,14 @@ void TTbarLJHists::fill(const uhh2::Event& event){
     if(EMclass==2) H1("ele"+std::to_string(i+1)+"__eta_BadTrk")->Fill(p.eta(), weight);
     if(EMclass==3) H1("ele"+std::to_string(i+1)+"__eta_Shower")->Fill(p.eta(), weight);
     if(EMclass==4) H1("ele"+std::to_string(i+1)+"__eta_Gap")->Fill(p.eta(), weight);
-    H1("ele"+std::to_string(i+1)+"__N_SCclusters")->Fill(p.Nclusters(),weight);
+    //    H1("ele"+std::to_string(i+1)+"__N_SCclusters")->Fill(p.Nclusters(),weight);
 
-    H1("ele"+std::to_string(i+1)+"__isEcalDriven")->Fill(p.isEcalDriven(),weight);
-    H1("ele"+std::to_string(i+1)+"__dxy")->Fill(p.dxy(),weight);
-    H1("ele"+std::to_string(i+1)+"__dEtaInSeed")->Fill(p.dEtaInSeed(),weight);
-    H1("ele"+std::to_string(i+1)+"__full5x5_e1x5")->Fill(p.full5x5_e1x5(),weight);
-    H1("ele"+std::to_string(i+1)+"__full5x5_e5x5")->Fill(p.full5x5_e5x5(),weight);
-    H1("ele"+std::to_string(i+1)+"__full5x5_e2x5Max")->Fill(p.full5x5_e2x5Max(),weight); 
+    // H1("ele"+std::to_string(i+1)+"__isEcalDriven")->Fill(p.isEcalDriven(),weight);
+    // H1("ele"+std::to_string(i+1)+"__dxy")->Fill(p.dxy(),weight);
+    // H1("ele"+std::to_string(i+1)+"__dEtaInSeed")->Fill(p.dEtaInSeed(),weight);
+    // H1("ele"+std::to_string(i+1)+"__full5x5_e1x5")->Fill(p.full5x5_e1x5(),weight);
+    // H1("ele"+std::to_string(i+1)+"__full5x5_e5x5")->Fill(p.full5x5_e5x5(),weight);
+    // H1("ele"+std::to_string(i+1)+"__full5x5_e2x5Max")->Fill(p.full5x5_e2x5Max(),weight); 
   }
   if(eleN>0){
     const Particle *lep = &event.electrons->at(0);//ToDo: extend for case with muon(s)  in final state;
