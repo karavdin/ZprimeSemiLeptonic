@@ -95,9 +95,11 @@ TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
     eleID = ElectronID_MVAnotrig_Spring15_25ns_loose;
     use_miniiso = false;
 
-    jet1_pt = 200.;
+    // jet1_pt = 200.;
+    // jet2_pt =  50.;
+    
+    jet1_pt = 150.;
     jet2_pt =  50.;
-
     MET     =  0.;
     HT_lep  =   0.;
   }
@@ -225,8 +227,8 @@ TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
   tt_TMVA_response = ctx.declare_event_output<float>("TMVA_response");
 
   book_HFolder("LuminosityHists", new LuminosityHists(ctx,"LuminosityHists"));
-  book_HFolder("LuminosityHists_metfilter", new LuminosityHists(ctx,"LuminosityHists_metfilter"));
-  book_HFolder("LuminosityHists_lepsel", new LuminosityHists(ctx,"LuminosityHists_lepsel"));
+  // book_HFolder("LuminosityHists_metfilter", new LuminosityHists(ctx,"LuminosityHists_metfilter"));
+  // book_HFolder("LuminosityHists_lepsel", new LuminosityHists(ctx,"LuminosityHists_lepsel"));
 }
 
 bool TTbarLJSkimmingModule::process(uhh2::Event& event){
@@ -251,15 +253,16 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
   if(event.isRealData && !lumi_sel->passes(event)) return false;
   if(event.isRealData)
     HFolder("LuminosityHists")->fill(event);
+  //  std::cout<<"luminosity sections checked"<<std::endl;
 
   /* MET filters */
   if(!metfilters_sel->passes(event)) return false;
-
   ////
-
+  //  std::cout<<"met filters checked"<<std::endl;
   HFolder("met")->fill(event);
-  if(event.isRealData)
-    HFolder("LuminosityHists_metfilter")->fill(event);
+  // std::cout<<"met hists are filled"<<std::endl;
+  // if(event.isRealData)
+  //   HFolder("LuminosityHists_metfilter")->fill(event);
   //// LEPTON selection
   
   muoSR_cleaner->process(event);
@@ -271,23 +274,23 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
   // std::cout<<"event.electrons->size() = "<<event.electrons->size()<<std::endl;
   const bool pass_lep1 = ((event.muons->size() >= 1) || (event.electrons->size() >= 1));
   if(!pass_lep1) return false;
-  //  std::cout<<"Electrons are sorted!"<<std::endl;
+  // std::cout<<"Electrons are sorted!"<<std::endl;
   HFolder("lep1")->fill(event);
-  if(event.isRealData)
-    HFolder("LuminosityHists_lepsel")->fill(event);
+  // if(event.isRealData)
+  //   HFolder("LuminosityHists_lepsel")->fill(event);
   
   ////
 
   //// JET selection
-  //std::cout<<"Jets are going to be cleaned!"<<std::endl;
+  //  std::cout<<"Jets are going to be cleaned!"<<std::endl;
   jet_IDcleaner->process(event);
-  // std::cout<<"Jets are cleaned!"<<std::endl;
+  //  std::cout<<"Jets are cleaned!"<<std::endl;
   jet_corrector->process(event);
 //!!  jetER_smearer->process(event);
   jetlepton_cleaner->process(event);
   jet_cleaner1->process(event);
   sort_by_pt<Jet>(*event.jets);
-  // std::cout<<"Jets are sorted!"<<std::endl;
+  //  std::cout<<"Jets are sorted!"<<std::endl;
 
   topjet_IDcleaner->process(event);
   topjet_corrector->process(event);
@@ -295,7 +298,7 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
   topjetlepton_cleaner->process(event);
   topjet_cleaner->process(event);
   sort_by_pt<TopJet>(*event.topjets);
-  // std::cout<<"TopJets are sorted!"<<std::endl;
+  //  std::cout<<"TopJets are sorted!"<<std::endl;
 
  
 
@@ -307,21 +310,21 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
   const bool pass_jet2 = jet2_sel->passes(event);
   if(!pass_jet2) return false;
   HFolder("jet2")->fill(event);
-  //  std::cout<<"pass_jet2!"<<std::endl;
+  //   std::cout<<"pass_jet2!"<<std::endl;
 
   /* 1st AK4 jet selection */
   const bool pass_jet1 = jet1_sel->passes(event);
   if(!pass_jet1) return false;
   HFolder("jet1")->fill(event);
   ////
-  //  std::cout<<"pass_jet1!"<<std::endl;
+  //   std::cout<<"pass_jet1!"<<std::endl;
 
   //// MET selection
   const bool pass_met = met_sel->passes(event);
   if(!pass_met) return false;
   HFolder("met")->fill(event);
   ////
-  //  std::cout<<"PASS MET"<<std::endl;
+  //   std::cout<<"PASS MET"<<std::endl;
 
 
   //// HT_lep selection
@@ -329,7 +332,7 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
   if(!pass_htlep) return false;
   HFolder("htlep")->fill(event);
   ////
-  //  std::cout<<"PASS HT_lep"<<std::endl;
+  //    std::cout<<"PASS HT_lep"<<std::endl;
 
 
   /* lepton-2Dcut variables */

@@ -10,7 +10,8 @@
 class weightcalc_pileup {
 
  public:
-  explicit weightcalc_pileup(const std::string&, const std::string&, const std::string& h_pu_DATA="pileup", const std::string& h_pu_MC="pileup");
+  //explicit weightcalc_pileup(const std::string&, const std::string&, const std::string& h_pu_DATA="pileup", const std::string& h_pu_MC="pileup");
+explicit weightcalc_pileup(const std::string&, const std::string&, const std::string& h_pu_DATA="input_Event/N_TrueInteractions", const std::string& h_pu_MC="input_Event/N_TrueInteractions");
 
   virtual ~weightcalc_pileup();
 

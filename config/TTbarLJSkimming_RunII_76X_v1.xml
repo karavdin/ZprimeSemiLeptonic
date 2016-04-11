@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd" [
 
-  <!ENTITY NEVT "-1">
+ <!ENTITY NEVT "-1">
 
-<!--  <!ENTITY NEVT "1000"> -->
+ <!-- <!ENTITY NEVT "1000000"> -->
+  <!-- <!ENTITY NEVT "124896137"> -->
 
   <!ENTITY KEYW "v01">
 
@@ -96,6 +97,22 @@
  <!ENTITY  TTbarScaleUp SYSTEM  "../../common/datasets/RunII_76X_v1/MC_TTbarScaleUp.xml">
   <!ENTITY  TTbarScaleDown SYSTEM  "../../common/datasets/RunII_76X_v1/MC_TTbarScaleDown.xml">
 
+<!ENTITY RSGluon_M0500 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_RSGluon_M0500.xml">
+<!ENTITY RSGluon_M0750 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_RSGluon_M0750.xml">
+<!ENTITY RSGluon_M1000 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_RSGluon_M1000.xml">
+<!ENTITY RSGluon_M1250 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_RSGluon_M1250.xml">
+<!ENTITY RSGluon_M1500 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_RSGluon_M1500.xml">
+<!ENTITY RSGluon_M2000 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_RSGluon_M2000.xml">
+<!ENTITY RSGluon_M2500 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_RSGluon_M2500.xml">
+<!ENTITY RSGluon_M3000 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_RSGluon_M3000.xml">
+<!ENTITY RSGluon_M3500 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_RSGluon_M3500.xml">
+<!ENTITY RSGluon_M4000 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_RSGluon_M4000.xml">
+
+<!ENTITY ZprimeToTT_30w_M1000 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_ZprimeToTT_30w_M1000.xml">
+<!ENTITY ZprimeToTT_30w_M2000 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_ZprimeToTT_30w_M2000.xml">
+<!ENTITY ZprimeToTT_30w_M3000 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_ZprimeToTT_30w_M3000.xml">
+<!ENTITY ZprimeToTT_30w_M4000 SYSTEM  "../../common/datasets/RunII_76X_v1/MC_ZprimeToTT_30w_M4000.xml">
+
 <!-- <!ENTITY  SYSTEM  "../../common/datasets/RunII_76X_v1/MC_.xml">
   <!ENTITY  SYSTEM  "../../common/datasets/RunII_76X_v1/MC_.xml">
   <!ENTITY  SYSTEM  "../../common/datasets/RunII_76X_v1/MC_.xml">
@@ -120,23 +137,23 @@
     <Library Name="libSUHH2ZprimeSemiLeptonic"/>
     <Package Name="SUHH2ZprimeSemiLeptonic.par"/>
 
-  <!-- <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="1"> -->
+ <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="1">
 
-     <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="1" RunMode="PROOF" ProofServer="lite://" ProofWorkDir="&PROOFdir;/" ProofNodes="15">
+<!-- <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="1" RunMode="PROOF" ProofServer="lite://" ProofWorkDir="&PROOFdir;/" ProofNodes="15"> -->
   <!--  <Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&OUTdir;/" PostFix="" TargetLumi="1" RunMode="PROOF" ProofServer="pod://"  ProofWorkDir="&PROOFdir;/">
 -->
 
-   
+   <!--
 
   <InputData Version="SingleEG" Lumi="1" Type="DATA" NEventsMax="&NEVT;" Cacheable="False">
                          &SingleELE_Run2015C_16Dec2015;
 			 &SingleELE_Run2015D_16Dec2015;
     <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData> 
 
-<!-- <InputData Version="SingleMUON" Lumi="1" Type="DATA" NEventsMax="&NEVT;" Cacheable="False">
+ <InputData Version="SingleMUON" Lumi="1" Type="DATA" NEventsMax="&NEVT;" Cacheable="False">
                          &SingleMuon_Run2015C_16Dec2015;
 			 &SingleMuon_Run2015D_16Dec2015;
-    <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData> -->
+    <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
 
 
 
@@ -249,7 +266,6 @@
  <InputData Version="TT_Mtt1000toInf" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
    &TT_Mtt1000toInf; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
 
-    
 
  <InputData Version="DYJetsToLL_LO_M50_HT0100to0200" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
     &DYJetsToLL_LO_M50_HT0100to0200; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
@@ -263,12 +279,7 @@
 <InputData Version="DYJetsToLL_LO_M50_HT0600toINFT" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
     &DYJetsToLL_LO_M50_HT0600toINFT; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
 
- <!-- <InputData Version="TTbarScaleUp" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
-    &TTbarScaleUp; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
-   <InputData Version="TTbarScaleDown" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
-    &TTbarScaleDown; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData> -->
-
-<InputData Version="QCD_Pt-20to30_MuEnrichedPt5" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+ <InputData Version="QCD_Pt-20to30_MuEnrichedPt5" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
     &QCD_Pt-20to30_MuEnrichedPt5; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
     <InputData Version="QCD_Pt-30to50_MuEnrichedPt5" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
     &QCD_Pt-30to50_MuEnrichedPt5; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
@@ -289,7 +300,46 @@
     <InputData Version="QCD_Pt-800to1000_MuEnrichedPt5" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
     &QCD_Pt-800to1000_MuEnrichedPt5; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
     <InputData Version="QCD_Pt-1000toInf_MuEnrichedPt5" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
-    &QCD_Pt-1000toInf_MuEnrichedPt5; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData> 
+    &QCD_Pt-1000toInf_MuEnrichedPt5; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData> -->
+
+
+ <InputData Version="Zp30w1000" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &ZprimeToTT_30w_M1000; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+ <InputData Version="Zp30w2000" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &ZprimeToTT_30w_M2000; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+ <InputData Version="Zp30w3000" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &ZprimeToTT_30w_M3000; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+ <InputData Version="Zp30w4000" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &ZprimeToTT_30w_M4000; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+
+
+<InputData Version="RSGluon_M0500" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &RSGluon_M0500; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+<InputData Version="RSGluon_M0750" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &RSGluon_M0750; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+<InputData Version="RSGluon_M1000" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &RSGluon_M1000; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+<InputData Version="RSGluon_M1250" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &RSGluon_M1250; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+<InputData Version="RSGluon_M1500" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &RSGluon_M1500; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+<InputData Version="RSGluon_M2000" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &RSGluon_M2000; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+<InputData Version="RSGluon_M2500" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &RSGluon_M2500; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+<InputData Version="RSGluon_M3000" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &RSGluon_M3000; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+<InputData Version="RSGluon_M3500" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &RSGluon_M3500; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+<InputData Version="RSGluon_M4000" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+   &RSGluon_M4000; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+
+
+
+<!-- <InputData Version="TTbarScaleUp" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+    &TTbarScaleUp; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData>
+   <InputData Version="TTbarScaleDown" Lumi="1" Type="MC" NEventsMax="&NEVT;" Cacheable="False">
+    &TTbarScaleDown; <InputTree Name="AnalysisTree"/> <OutputTree Name="AnalysisTree"/> </InputData> -->
 
       <UserConfig>
         <Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices"/>
