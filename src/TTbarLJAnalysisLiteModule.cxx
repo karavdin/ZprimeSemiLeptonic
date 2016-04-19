@@ -329,6 +329,7 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
 
   met_sel  .reset(new METCut  (MET   , uhh2::infinity));
   //  met_sel  .reset(new METCut  (MET , 30.)); //TEST: QCD Sideband
+  //  met_sel  .reset(new METCut  (MET , 70.)); //TEST: QCD Sideband
   htlep_sel.reset(new HTlepCut(HT_lep, uhh2::infinity));
 
   if(triangul_cut){
@@ -384,8 +385,8 @@ TTbarLJAnalysisLiteModule::TTbarLJAnalysisLiteModule(uhh2::Context& ctx){
   }
   else topleppt_sel.reset(new uhh2::AndSelection(ctx));
 
-  //  chi2_sel.reset(new HypothesisDiscriminatorCut(ctx,  0., 30., ttbar_hyps_label, ttbar_chi2_label));
-  chi2_sel.reset(new HypothesisDiscriminatorCut(ctx,  0., 1e6, ttbar_hyps_label, ttbar_chi2_label)); //No cut for QCD studies
+  chi2_sel.reset(new HypothesisDiscriminatorCut(ctx,  0., 30., ttbar_hyps_label, ttbar_chi2_label)); //TEST for chi2
+  //  chi2_sel.reset(new HypothesisDiscriminatorCut(ctx,  0., 1e6, ttbar_hyps_label, ttbar_chi2_label)); //No cut for QCD studies
 
   //// HISTS
 
@@ -1417,7 +1418,7 @@ bool TTbarLJAnalysisLiteModule::process(uhh2::Event& event){
     return false; // do NOT use unphysical data
   TMVA_response = reader->EvaluateMVA(methodName);
   if(!pass_chi2) return false;
-  if(TMVA_response<0.0) return false; //BDTG
+  if(TMVA_response<0.76) return false; //BDTG
   //std::cout<<"TMVA_response = "<<TMVA_response<<std::endl;
   event.set(tt_TMVA_response, TMVA_response);
 
