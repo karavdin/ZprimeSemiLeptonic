@@ -19,7 +19,8 @@
 <!-- <!ENTITY OUTdir   "/nfs/dust/cms/user/karavdia/ttbar_semilep_13TeV/RunII_76X_v1/ttbarLJAnalysis/&channel;/"> -->
 <!-- <!ENTITY OUTdir   "/nfs/dust/cms/user/karavdia/ttbar_semilep_13TeV/RunII_76X_v1/ttbarLJAnalysis/QCD_Sideband/&channel;/"> -->
 <!-- <!ENTITY OUTdir   "/nfs/dust/cms/user/karavdia/ttbar_semilep_13TeV/RunII_76X_v1/ttbarLJAnalysis/&channel;/BDTG/"> -->
- <!ENTITY OUTdir   "/nfs/dust/cms/user/karavdia/ttbar_semilep_13TeV/RunII_76X_v1/ttbarLJAnalysis/&channel;/BDTG_0_0_cut/">
+ <!ENTITY OUTdir   "/nfs/dust/cms/user/karavdia/ttbar_semilep_13TeV/RunII_76X_v1/ttbarLJAnalysis/&channel;/BDTG_0_76_cut_chi2_30/">
+<!-- <!ENTITY OUTdir   "/nfs/dust/cms/user/karavdia/ttbar_semilep_13TeV/RunII_76X_v1/ttbarLJAnalysis/&channel;/MET_below_70/"> -->
 <!--  <!ENTITY OUTdir   "/nfs/dust/cms/user/karavdia/ttbar_semilep_13TeV/RunII_76X_v1/ttbarLJAnalysis/&channel;/BDTG_0_0_cut_chi30/"> -->
 <!-- <!ENTITY OUTdir   "/nfs/dust/cms/user/karavdia/ttbar_semilep_13TeV/RunII_76X_v1/ttbarLJAnalysis/&channel;/MLP/"> -->
 <!-- <!ENTITY OUTdir   "/nfs/dust/cms/user/karavdia/ttbar_semilep_13TeV/RunII_76X_v1/ttbarLJAnalysis/&channel;/SVM/"> -->
