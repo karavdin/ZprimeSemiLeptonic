@@ -24,6 +24,7 @@ class TTbarLJHists : public uhh2::Hists {
   TH1F *muo1__minDR_jet,*muo1__pTrel_jet;
   TH1F *muo2__charge,*muo2__pt,*muo2__eta,*muo2__phi;
   TH1F *muo2__minDR_jet,*muo2__pTrel_jet;
+  TH1F *ele1__eta_SC, *ele1__Deta_trk_SC;//*ele1__DR_trk_SC;
   TH1F *ele1__class,*ele1__charge,*ele1__pt,*ele1__ptError;
   TH1F *ele1__eta,*ele1__etaError,*ele1__phi,*ele1__phiError;
   TH1F *ele2__DPhi_met,*ele1__DPhi_met;

@@ -60,7 +60,8 @@ class TTbarLJSkimmingModule : public ModuleBASE {
 
   std::unique_ptr<JetCleaner>                      jet_cleaner1;
   std::unique_ptr<JetCleaner>                      jet_cleaner2;
-  std::unique_ptr<JetCleaner>                  topjet_IDcleaner;
+  //  std::unique_ptr<JetCleaner>                  topjet_IDcleaner;
+  std::unique_ptr<TopJetCleaner>                  topjet_IDcleaner;
   std::unique_ptr<SubJetCorrector>             topjet_subjet_corrector;
   std::unique_ptr<GenericJetResolutionSmearer> topjetER_smearer;
   //  std::unique_ptr<TopJetLeptonDeltaRCleaner>   topjetlepton_cleaner;
@@ -142,7 +143,7 @@ TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
     //    eleID = ElectronID_Spring16_medium_noIso;         
     use_miniiso = false;
     jet1_pt = 50.;
-    jet2_pt =  20.;
+    jet2_pt =  30.;
 
     //    MET     =  50.;
     MET     =   0.;
@@ -364,13 +365,15 @@ TTbarLJSkimmingModule::TTbarLJSkimmingModule(uhh2::Context& ctx){
   jet_cleaner1.reset(new JetCleaner(ctx, 15., 3.0));
   jet_cleaner2.reset(new JetCleaner(ctx, 30., 2.4));
 
-  topjet_IDcleaner.reset(new JetCleaner(ctx, jetID));
+  //  topjet_IDcleaner.reset(new JetCleaner(ctx, jetID, "topjets"));
+  topjet_IDcleaner.reset(new TopJetCleaner(ctx, jetID, "topjets"));
   topjet_corrector.reset(new TopJetCorrector(ctx, JEC_AK8));
   topjet_subjet_corrector.reset(new SubJetCorrector(ctx, JEC_AK4)); //ToDo
   topjetlepton_cleaner.reset(new JetLeptonCleaner_by_KEYmatching(ctx, JEC_AK8,"topjets"));
   topjet_cleaner.reset(new TopJetCleaner(ctx, TopJetId(PtEtaCut(450., 2.4))));
 
   //// EVENT SELECTION
+  //  std::cout<<"Set jet_sel: jet1_pt = "<<jet1_pt<<", jet2_pt = "<<jet2_pt<<std::endl;
   jet2_sel.reset(new NJetSelection(2, -1, JetId(PtEtaCut(jet2_pt, 2.4))));
   jet1_sel.reset(new NJetSelection(1, -1, JetId(PtEtaCut(jet1_pt, 2.4))));
 
@@ -571,7 +574,7 @@ bool TTbarLJSkimmingModule::process(uhh2::Event& event){
   topjet_cleaner->process(event);
 
   sort_by_pt<TopJet>(*event.topjets);
-  //  sort_by_pt<TopJet>(*event.toppuppijets);
+  sort_by_pt<TopJet>(*event.toppuppijets);
 
   /* 2nd AK4 jet selection */
   const bool pass_jet2 = jet2_sel->passes(event);
