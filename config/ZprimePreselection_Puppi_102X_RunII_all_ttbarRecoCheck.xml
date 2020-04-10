@@ -1,0 +1,1044 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE JobConfiguration PUBLIC "" "JobConfig.dtd" [
+
+
+<!ENTITY TargetLumi      "14000">
+<!ENTITY PRESELdir       "/nfs/dust/cms/user/karavdia/ZprimeSemiLeptonic/102X_v1/Preselection/RunII_all_ttbarRecoCheck/">
+<!ENTITY b_Cacheable     "False">
+<!ENTITY NEVT            "-1">
+<!ENTITY IS_PUPPI        "true">
+
+
+<!ENTITY TTToSemiLeptonic_2018  SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/MC_TTToSemiLeptonic.xml">
+<!ENTITY ZprimeToTTJet_M500_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTTJet_M500.xml">
+<!ENTITY ZprimeToTTJet_M750_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTTJet_M750.xml">
+<!ENTITY ZprimeToTTJet_M1000_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTTJet_M1000.xml">
+<!ENTITY ZprimeToTTJet_M1250_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTTJet_M1250.xml">
+<!ENTITY ZprimeToTTJet_M1500_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTTJet_M1500.xml">
+<!ENTITY ZprimeToTTJet_M2000_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTTJet_M2000.xml">
+<!ENTITY ZprimeToTTJet_M2500_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTTJet_M2500.xml">
+<!ENTITY ZprimeToTTJet_M3000_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTTJet_M3000.xml">
+<!ENTITY ZprimeToTTJet_M3500_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTTJet_M3500.xml">
+<!ENTITY ZprimeToTTJet_M4000_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTTJet_M4000.xml">
+<!ENTITY ZprimeToTTJet_M5000_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTTJet_M5000.xml">
+<!ENTITY ZprimeToTTJet_M6000_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTTJet_M6000.xml">
+<!ENTITY ZprimeToTTJet_M7000_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTTJet_M7000.xml">
+
+<!ENTITY ZprimeToTT_M500_W5_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M500_W5.xml">
+<!ENTITY ZprimeToTT_M750_W7p5_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M750_W7p5.xml">
+<!ENTITY ZprimeToTT_M1000_W10_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M1000_W10.xml">
+<!ENTITY ZprimeToTT_M1250_W12p5_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M1250_W12p5.xml">
+<!ENTITY ZprimeToTT_M1500_W15_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M1500_W15.xml">
+<!ENTITY ZprimeToTT_M2000_W20_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M2000_W20.xml">
+<!ENTITY ZprimeToTT_M2500_W25_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M2500_W25.xml">
+<!ENTITY ZprimeToTT_M3000_W30_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M3000_W30.xml">
+<!ENTITY ZprimeToTT_M3500_W35_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M3500_W35.xml">
+<!ENTITY ZprimeToTT_M4000_W40_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M4000_W40.xml">
+<!ENTITY ZprimeToTT_M4500_W45_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M4500_W45.xml">
+<!ENTITY ZprimeToTT_M5000_W50_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M5000_W50.xml">
+<!ENTITY ZprimeToTT_M6000_W60_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M6000_W60.xml">
+<!ENTITY ZprimeToTT_M7000_W70_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M7000_W70.xml">
+<!ENTITY ZprimeToTT_M8000_W80_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M8000_W80.xml">
+
+
+<!ENTITY ZprimeToTT_M500_W50_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M500_W50.xml">
+<!ENTITY ZprimeToTT_M750_W75_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M750_W75.xml">
+<!ENTITY ZprimeToTT_M1000_W100_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M1000_W100.xml">
+<!ENTITY ZprimeToTT_M1250_W125_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M1250_W125.xml">
+<!ENTITY ZprimeToTT_M1500_W150_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M1500_W150.xml">
+<!ENTITY ZprimeToTT_M2000_W200_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M2000_W200.xml">
+<!ENTITY ZprimeToTT_M2500_W250_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M2500_W250.xml">
+<!ENTITY ZprimeToTT_M3000_W300_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M3000_W300.xml">
+<!ENTITY ZprimeToTT_M3500_W350_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M3500_W350.xml">
+<!ENTITY ZprimeToTT_M4000_W400_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M4000_W400.xml">
+<!ENTITY ZprimeToTT_M4500_W450_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M4500_W450.xml">
+<!ENTITY ZprimeToTT_M5000_W500_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M5000_W500.xml">
+<!ENTITY ZprimeToTT_M6000_W600_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M6000_W600.xml">
+<!ENTITY ZprimeToTT_M7000_W700_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M7000_W700.xml">
+<!ENTITY ZprimeToTT_M8000_W800_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M8000_W800.xml">
+<!ENTITY ZprimeToTT_M9000_W900_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M9000_W900.xml">
+
+<!ENTITY ZprimeToTT_M1000_W300_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M1000_W300.xml">
+<!ENTITY ZprimeToTT_M2000_W600_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M2000_W600.xml">
+<!ENTITY ZprimeToTT_M3000_W900_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M3000_W900.xml">
+<!ENTITY ZprimeToTT_M4000_W1200_2018 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2018/ZprimeToTTbar/MC_ZprimeToTT_M4000_W1200.xml">
+
+
+<!ENTITY TTToSemiLeptonic_2017v2  SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/MC_TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8.xml">
+<!ENTITY ZprimeToTTJet_M500_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTTJet_M500.xml">
+<!ENTITY ZprimeToTTJet_M750_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTTJet_M750.xml">
+<!ENTITY ZprimeToTTJet_M1000_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTTJet_M1000.xml">
+<!ENTITY ZprimeToTTJet_M1250_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTTJet_M1250.xml">
+<!ENTITY ZprimeToTTJet_M1500_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTTJet_M1500.xml">
+<!ENTITY ZprimeToTTJet_M2000_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTTJet_M2000.xml">
+<!ENTITY ZprimeToTTJet_M2500_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTTJet_M2500.xml">
+<!ENTITY ZprimeToTTJet_M3000_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTTJet_M3000.xml">
+<!ENTITY ZprimeToTTJet_M3500_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTTJet_M3500.xml">
+<!ENTITY ZprimeToTTJet_M4000_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTTJet_M4000.xml">
+<!ENTITY ZprimeToTTJet_M5000_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTTJet_M5000.xml">
+<!ENTITY ZprimeToTTJet_M6000_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTTJet_M6000.xml">
+<!ENTITY ZprimeToTTJet_M7000_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTTJet_M7000.xml">
+
+<!ENTITY ZprimeToTT_M500_W5_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M500_W5.xml">
+<!ENTITY ZprimeToTT_M750_W7p5_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M750_W7p5.xml">
+<!ENTITY ZprimeToTT_M1000_W10_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M1000_W10.xml">
+<!ENTITY ZprimeToTT_M1250_W12p5_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M1250_W12p5.xml">
+<!ENTITY ZprimeToTT_M1500_W15_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M1500_W15.xml">
+<!ENTITY ZprimeToTT_M2000_W20_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M2000_W20.xml">
+<!ENTITY ZprimeToTT_M2500_W25_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M2500_W25.xml">
+<!ENTITY ZprimeToTT_M3000_W30_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M3000_W30.xml">
+<!ENTITY ZprimeToTT_M3500_W35_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M3500_W35.xml">
+<!ENTITY ZprimeToTT_M4000_W40_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M4000_W40.xml">
+<!ENTITY ZprimeToTT_M4500_W45_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M4500_W45.xml">
+<!ENTITY ZprimeToTT_M5000_W50_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M5000_W50.xml">
+<!ENTITY ZprimeToTT_M6000_W60_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M6000_W60.xml">
+<!ENTITY ZprimeToTT_M7000_W70_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M7000_W70.xml">
+<!ENTITY ZprimeToTT_M8000_W80_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M8000_W80.xml">
+
+
+<!ENTITY ZprimeToTT_M500_W50_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M500_W50.xml">
+<!ENTITY ZprimeToTT_M750_W75_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M750_W75.xml">
+<!ENTITY ZprimeToTT_M1000_W100_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M1000_W100.xml">
+<!ENTITY ZprimeToTT_M1250_W125_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M1250_W125.xml">
+<!ENTITY ZprimeToTT_M1500_W150_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M1500_W150.xml">
+<!ENTITY ZprimeToTT_M2000_W200_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M2000_W200.xml">
+<!ENTITY ZprimeToTT_M2500_W250_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M2500_W250.xml">
+<!ENTITY ZprimeToTT_M3000_W300_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M3000_W300.xml">
+<!ENTITY ZprimeToTT_M3500_W350_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M3500_W350.xml">
+<!ENTITY ZprimeToTT_M4000_W400_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M4000_W400.xml">
+<!ENTITY ZprimeToTT_M4500_W450_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M4500_W450.xml">
+<!ENTITY ZprimeToTT_M5000_W500_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M5000_W500.xml">
+<!ENTITY ZprimeToTT_M6000_W600_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M6000_W600.xml">
+<!ENTITY ZprimeToTT_M7000_W700_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M7000_W700.xml">
+<!ENTITY ZprimeToTT_M8000_W800_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M8000_W800.xml">
+<!ENTITY ZprimeToTT_M9000_W900_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M9000_W900.xml">
+
+<!ENTITY ZprimeToTT_M1000_W300_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M1000_W300.xml">
+<!ENTITY ZprimeToTT_M2000_W600_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M2000_W600.xml">
+<!ENTITY ZprimeToTT_M3000_W900_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M3000_W900.xml">
+<!ENTITY ZprimeToTT_M4000_W1200_2017v2 SYSTEM  "/nfs/dust/cms/user/karavdia/102X_v1_NtupleProduction/CMSSW_10_2_11/src/UHH2/common/datasets/RunII_102X_v1/2017/ZprimeToTTbar/MC_ZprimeToTT_M4000_W1200.xml">
+
+<!ENTITY ZprimeToTT_M500_W5_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-500_W-5.xml">
+<!ENTITY ZprimeToTT_M750_W7p5_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-750_W-7p5.xml">
+<!ENTITY ZprimeToTT_M1000_W10_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-1000_W-10.xml">
+<!ENTITY ZprimeToTT_M1250_W12p5_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-1250_W-12p5.xml">
+<!ENTITY ZprimeToTT_M1500_W15_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-1500_W-15.xml">
+<!ENTITY ZprimeToTT_M2000_W20_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-2000_W-20.xml">
+<!ENTITY ZprimeToTT_M2500_W25_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-2500_W-25.xml">
+<!ENTITY ZprimeToTT_M3000_W30_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-3000_W-30.xml">
+<!ENTITY ZprimeToTT_M3500_W35_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-3500_W-35.xml">
+<!ENTITY ZprimeToTT_M4000_W40_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-4000_W-40.xml">
+<!ENTITY ZprimeToTT_M4500_W45_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-4500_W-45.xml">
+<!ENTITY ZprimeToTT_M5000_W50_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-5000_W-50.xml">
+
+<!ENTITY ZprimeToTT_M500_W50_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-500_W-50.xml">
+<!ENTITY ZprimeToTT_M750_W75_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-750_W-75.xml">
+<!ENTITY ZprimeToTT_M1000_W100_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-1000_W-100.xml">
+<!ENTITY ZprimeToTT_M1250_W125_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-1250_W-125.xml">
+<!ENTITY ZprimeToTT_M1500_W150_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-1500_W-150.xml">
+<!ENTITY ZprimeToTT_M2000_W200_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-2000_W-200.xml">
+<!ENTITY ZprimeToTT_M2500_W250_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-2500_W-250.xml">
+<!ENTITY ZprimeToTT_M3000_W300_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-3000_W-300.xml">
+<!ENTITY ZprimeToTT_M3500_W350_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-3500_W-350.xml">
+<!ENTITY ZprimeToTT_M4000_W400_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-4000_W-400.xml">
+<!ENTITY ZprimeToTT_M4500_W450_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-4500_W-450.xml">
+<!ENTITY ZprimeToTT_M5000_W500_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-5000_W-500.xml">
+
+<!ENTITY ZprimeToTT_M1000_W300_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-1000_W-300.xml">
+<!ENTITY ZprimeToTT_M2000_W600_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-2000_W-600.xml">
+<!ENTITY ZprimeToTT_M4000_W1200_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTT_M-4000_W-1200.xml">
+
+<!ENTITY ZprimeToTTJet_M500_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTTJet_M-500.xml">
+<!ENTITY ZprimeToTTJet_M750_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTTJet_M-750.xml">
+<!ENTITY ZprimeToTTJet_M1000_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTTJet_M-1000.xml">
+<!ENTITY ZprimeToTTJet_M1250_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTTJet_M-1250.xml">
+<!ENTITY ZprimeToTTJet_M1500_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTTJet_M-1500.xml">
+<!ENTITY ZprimeToTTJet_M2000_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTTJet_M-2000.xml">
+<!ENTITY ZprimeToTTJet_M2500_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTTJet_M-2500.xml">
+<!ENTITY ZprimeToTTJet_M3000_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTTJet_M-3000.xml">
+<!ENTITY ZprimeToTTJet_M3500_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTTJet_M-3500.xml">
+<!ENTITY ZprimeToTTJet_M4000_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_ZprimeToTTJet_M-4000.xml">
+
+<!ENTITY RSGluonToTT_M-500_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_RSGluonToTT_M-500.xml">
+<!ENTITY RSGluonToTT_M-750_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_RSGluonToTT_M-750.xml">
+<!ENTITY RSGluonToTT_M-1000_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_RSGluonToTT_M-1000.xml">
+<!ENTITY RSGluonToTT_M-1250_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_RSGluonToTT_M-1250.xml">
+<!ENTITY RSGluonToTT_M-1500_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_RSGluonToTT_M-1500.xml">
+<!ENTITY RSGluonToTT_M-2000_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_RSGluonToTT_M-2000.xml">
+<!ENTITY RSGluonToTT_M-2500_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_RSGluonToTT_M-2500.xml">
+<!ENTITY RSGluonToTT_M-3000_2016v3 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/ZprimeToTTbar/MC_RSGluonToTT_M-3000.xml">
+
+<!ENTITY RSGluonToTT_M-4000_2016v2 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v2/ZprimeToTTbar/MC_RSGluonToTT_M-4000.xml">
+<!ENTITY RSGluonToTT_M-4500_2016v2 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v2/ZprimeToTTbar/MC_RSGluonToTT_M-4500.xml">
+<!ENTITY RSGluonToTT_M-5000_2016v2 SYSTEM  "../../common/datasets/RunII_102X_v1/2016v2/ZprimeToTTbar/MC_RSGluonToTT_M-5000.xml">
+<!ENTITY TT_TuneCUETP8M2T4_2016v3  SYSTEM  "../../common/datasets/RunII_102X_v1/2016v3/MC_TT_TuneCUETP8M2T4.xml">
+
+
+]>
+
+<!--
+<ConfigParse NEventsBreak="0" LastBreak="0" FileSplit="10" AutoResubmit="100"/>
+<ConfigSGE RAM="2" DISK="2" Mail="anastasia.karavdina@desy.de" Notification="as" Workdir="workdir_Zprime_PreSelec_2018_2"/>
+-->
+
+<JobConfiguration JobName="ZprimePreselectionJob" OutputLevel="INFO">
+	<Library Name="libSUHH2ZprimeSemiLeptonic"/>
+	<Package Name="SUHH2ZprimeSemiLeptonic.par"/>
+
+	<Cycle Name="uhh2::AnalysisModuleRunner" OutputDirectory="&PRESELdir;/" PostFix="" TargetLumi="&TargetLumi;">
+<!--
+ <InputData Lumi="92260.16399" NEventsMax="&NEVT;" Type="MC" Version="TT_TuneCUETP8M2T4_2016v3" Cacheable="&b_Cacheable;">
+	    &TT_TuneCUETP8M2T4_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="336939.1825" NEventsMax="&NEVT;" Type="MC" Version="TTToSemiLeptonic_2018" Cacheable="&b_Cacheable;">
+	    &TTToSemiLeptonic_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="12852869549.5" NEventsMax="&NEVT;" Type="MC" Version="TTToSemiLeptonic_2017v2" Cacheable="&b_Cacheable;">
+	    &TTToSemiLeptonic_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+-->
+
+ <InputData Lumi="214489" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M500_W5_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M500_W5_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="189140" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M750_W7p5_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M750_W7p5_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="180809" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1000_W10_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1000_W10_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="209966" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1500_W15_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1500_W15_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="197503" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2000_W20_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2000_W20_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="190046" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2500_W25_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2500_W25_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="184512" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3000_W30_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3000_W30_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="178110" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3500_W35_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3500_W35_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="172644" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M4000_W40_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M4000_W40_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+
+ <InputData Lumi="166100" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M5000_W50_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M5000_W50_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="195725" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M6000_W60_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M6000_W60_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+ <InputData Lumi="209489" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M7000_W70_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M7000_W70_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+ <InputData Lumi="148325" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M8000_W80_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M8000_W80_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+
+
+<InputData Lumi="190602" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M500_W50_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M500_W50_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="235279" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M750_W75_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M750_W75_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="182928" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1000_W100_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1000_W100_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+
+ <InputData Lumi="202323" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1500_W150_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1500_W150_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="188873" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2000_W200_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2000_W200_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="192339" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2500_W250_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2500_W250_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="192605" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3000_W300_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3000_W300_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="191160" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3500_W350_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3500_W350_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="196958" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M4000_W400_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M4000_W400_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+
+ <InputData Lumi="163079" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M5000_W500_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M5000_W500_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="163079" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M6000_W600_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M6000_W600_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="168505" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M7000_W700_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M7000_W700_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+ <InputData Lumi="166452" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M8000_W800_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M8000_W800_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+ <InputData Lumi="172368" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M9000_W900_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M9000_W900_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+
+<InputData Lumi="184369" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1000_W300_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1000_W300_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+<InputData Lumi="166443" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2000_W600_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2000_W600_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+<InputData Lumi="184112" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3000_W900_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3000_W900_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+<InputData Lumi="213303" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M4000_W1200_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M4000_W1200_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+
+	<InputData Lumi="198000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M500_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M500_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M750_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M750_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M1000_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M1000_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="194000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M1250_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M1250_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M1500_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M1500_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M2000_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M2000_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M2500_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M2500_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M3000_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M3000_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M3500_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M3500_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M4000_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M4000_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M5000_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M5000_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="197000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M6000_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M6000_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="185000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M7000_2018" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M7000_2018;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+	 
+<InputData Lumi="16947" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M500_W50_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M500_W50_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="20475" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M750_W75_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M750_W75_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="20034" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1000_W100_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1000_W100_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+
+ <InputData Lumi="19144" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1500_W150_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1500_W150_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="22332" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2000_W200_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2000_W200_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="20010" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2500_W250_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2500_W250_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="17236" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3000_W300_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3000_W300_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="20825" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3500_W350_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3500_W350_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="20935" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M4000_W400_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M4000_W400_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+
+ <InputData Lumi="20878" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M5000_W500_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M5000_W500_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="20341" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M6000_W600_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M6000_W600_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="19836" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M7000_W700_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M7000_W700_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+ <InputData Lumi="19212" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M8000_W800_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M8000_W800_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+ <InputData Lumi="22127" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M9000_W900_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M9000_W900_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+
+<InputData Lumi="19445" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1000_W300_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1000_W300_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+<InputData Lumi="19582" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2000_W600_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2000_W600_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+<InputData Lumi="21311" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3000_W900_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3000_W900_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+<InputData Lumi="20041" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M4000_W1200_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M4000_W1200_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="20742" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M750_W7p5_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M750_W7p5_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="18800" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1000_W10_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1000_W10_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="20535" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1500_W15_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1500_W15_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="20873" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2000_W20_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2000_W20_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="20788" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2500_W25_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2500_W25_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="19698" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3500_W35_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3500_W35_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="19820" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M4000_W40_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M4000_W40_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+
+ <InputData Lumi="19000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M5000_W50_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M5000_W50_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="1927" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M7000_W70_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M7000_W70_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+ <InputData Lumi="18813" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M8000_W80_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M8000_W80_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+	<InputData Lumi="16000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M500_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M500_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="20000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M750_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M750_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="20000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M1000_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M1000_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+	  <InputData Lumi="20000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M2000_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M2000_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+	 
+
+<InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="RSGluonToTT_M-500_2016v3" Cacheable="&b_Cacheable;">
+	    &RSGluonToTT_M-500_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+</InputData>
+<InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="RSGluonToTT_M-750_2016v3" Cacheable="&b_Cacheable;">
+	    &RSGluonToTT_M-750_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+</InputData>
+<InputData Lumi="98560" NEventsMax="&NEVT;" Type="MC" Version="RSGluonToTT_M-1000_2016v3" Cacheable="&b_Cacheable;">
+	    &RSGluonToTT_M-1000_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+</InputData>
+<InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="RSGluonToTT_M-1250_2016v3" Cacheable="&b_Cacheable;">
+	    &RSGluonToTT_M-1250_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+</InputData>
+<InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="RSGluonToTT_M-1500_2016v3" Cacheable="&b_Cacheable;">
+	    &RSGluonToTT_M-1500_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+</InputData>
+<InputData Lumi="100000" NEventsMax="&NEVT;" Type="MC" Version="RSGluonToTT_M-2500_2016v3" Cacheable="&b_Cacheable;">
+	    &RSGluonToTT_M-2500_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+</InputData>
+<InputData Lumi="99755" NEventsMax="&NEVT;" Type="MC" Version="RSGluonToTT_M-3000_2016v3" Cacheable="&b_Cacheable;">
+	    &RSGluonToTT_M-3000_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+</InputData>
+
+
+<InputData Lumi="99136" NEventsMax="&NEVT;" Type="MC" Version="RSGluonToTT_M-4000_2016v2" Cacheable="&b_Cacheable;">
+	    &RSGluonToTT_M-4000_2016v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="99597" NEventsMax="&NEVT;" Type="MC" Version="RSGluonToTT_M-4500_2016v2" Cacheable="&b_Cacheable;">
+	    &RSGluonToTT_M-4500_2016v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+</InputData>
+
+<InputData Lumi="98413" NEventsMax="&NEVT;" Type="MC" Version="RSGluonToTT_M-5000_2016v2" Cacheable="&b_Cacheable;">
+	    &RSGluonToTT_M-5000_2016v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+</InputData>
+
+
+         <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M500_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M500_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+         <InputData Lumi="197360" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M750_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M750_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+         <InputData Lumi="197176" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M1000_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M1000_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+         <InputData Lumi="192800" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M1250_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M1250_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+         <InputData Lumi="199772" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M1500_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M1500_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+         <InputData Lumi="200000" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M2000_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M2000_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+         <InputData Lumi="195200" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M2500_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M2500_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+         <InputData Lumi="198236" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M3000_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M3000_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+         <InputData Lumi="195065" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M3500_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M3500_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+         <InputData Lumi="179736" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M4000_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M4000_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+
+
+ <InputData Lumi="101189" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M500_W50_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M500_W50_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="100820" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M750_W75_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M750_W75_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="100820" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1000_W100_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1000_W100_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="96845" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1250_W125_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1250_W125_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="111108" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1500_W150_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1500_W150_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="104119" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2000_W200_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2000_W200_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="96077" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2500_W250_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2500_W250_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="189164" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3000_W300_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3000_W300_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="101022" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3500_W350_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3500_W350_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="102411" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M4000_W400_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M4000_W400_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="84504" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M4500_W450_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M4500_W450_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="107156" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M5000_W500_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M5000_W500_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+<InputData Lumi="79477" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1000_W300_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1000_W300_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+<InputData Lumi="114009" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2000_W600_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2000_W600_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+<InputData Lumi="88039" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M4000_W1200_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M4000_W1200_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+
+ <InputData Lumi="102461" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M500_W5_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M500_W5_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="94012" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M750_W7p5_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M750_W7p5_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="103785" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1000_W10_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1000_W10_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="102833" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1250_W12p5_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1250_W12p5_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="99690" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M1500_W15_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M1500_W15_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="202556" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2000_W20_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2000_W20_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="100288" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M2500_W25_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M2500_W25_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="91900" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3000_W30_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3000_W30_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="91004" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3500_W35_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3500_W35_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="107914" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M4000_W40_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M4000_W40_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="100306" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M4500_W45_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M4500_W45_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+ <InputData Lumi="112042" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M5000_W50_2016v3" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M5000_W50_2016v3;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+
+
+	  
+<!-- DOES NOT EXIST -->
+<!--
+ <InputData Lumi="" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M3000_W30_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M3000_W30_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+-->
+<!--
+	  <InputData Lumi="" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M1250_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M1250_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M1500_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M1500_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+-->
+<!--
+	  <InputData Lumi="" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M2500_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M2500_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M3000_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M3000_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M3500_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M3500_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M4000_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M4000_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M5000_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M5000_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M6000_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M6000_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+	  <InputData Lumi="" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTTJet_M7000_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTTJet_M7000_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+-->
+<!--
+ <InputData Lumi="" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M6000_W60_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M6000_W60_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+-->
+<!--
+ <InputData Lumi="" NEventsMax="&NEVT;" Type="MC" Version="ZprimeToTT_M500_W5_2017v2" Cacheable="&b_Cacheable;">
+	    &ZprimeToTT_M500_W5_2017v2;
+	    <InputTree Name="AnalysisTree" />
+	    <OutputTree Name="AnalysisTree" />
+	  </InputData>
+-->
+<!-- DOES NOT EXIST [END] -->
+		<UserConfig>
+			<Item Name="PrimaryVertexCollection" Value="offlineSlimmedPrimaryVertices"/>
+			<Item Name="GenParticleCollection"   Value="GenParticles"/>
+			<Item Name="ElectronCollection"      Value="slimmedElectronsUSER"/>
+			<Item Name="MuonCollection"          Value="slimmedMuonsUSER"/>
+			<Item Name="JetCollection"           Value="jetsAk4Puppi"/>
+			<Item Name="GenJetCollection"        Value="slimmedGenJets"/> 
+			<Item Name="TopJetCollection"        Value="jetsAk8CHSSubstructure_SoftDropCHS"/>
+<!--			<Item Name="TopJetCollectionGEN"     Value="ak8GenJetsSoftDrop"/> --> <!-- Check odinary ak8GenJetsFat !-->
+			<!-- <Item Name="GenTopJetCollection"     Value="ak8GenJetsSoftDrop"/>--> <!-- Check odinary ak8GenJetsFat !-->
+			<Item Name="GenTopJetCollection"     Value="genjetsAk8SubstructureSoftDrop"/> <!-- Check odinary ak8GenJetsFat !--> <!-- new in ntuples! -->
+			<Item Name="TopPuppiJetCollection"   Value="jetsAk8PuppiSubstructure_SoftDropPuppi"/>
+			<Item Name="METName"                 Value="slimmedMETsPuppi"/>
+			<Item Name="genMETName"              Value="slimmedMETs_GenMET"/>
+
+			<Item Name="lumi_file" Value="/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/data/2018/Cert_314472-325175_13TeV_PromptReco_Collisions18_JSON.root"/>
+			<Item Name="lumihists_lumi_per_bin" Value="500.0"/>
+
+			<Item Name="is_puppi" Value="&IS_PUPPI;"/>
+
+
+			<Item Name="use_sframe_weight" Value="false"/>
+			<Item Name="jersmear_direction" Value="nominal"/>
+			<Item Name="jecsmear_direction" Value="nominal"/>
+
+
+
+			<Item Name="AnalysisModule" Value="ZprimePreselectionModule"/>
+		</UserConfig>
+
+	</Cycle>
+</JobConfiguration>

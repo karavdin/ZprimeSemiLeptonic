@@ -1,0 +1,172 @@
+ ( INFO  )  SCycleController   : Initializing
+ ( INFO  )  SCycleController   : Deleting all analysis cycle algorithms from memory
+ ( INFO  )  SCycleController   : Reading xml file: 'TT_TuneCUETP8M2T4_2016v3_47.xml'
+ ( INFO  )  SCycleController   : Created cycle 'uhh2::AnalysisModuleRunner'
+ ( INFO  )  SCycleBaseExec     : Initializing from configuration
+ ( INFO  )  SCycleBaseExec     : Reading SInputData: MC - TT_TuneCUETP8M2T4_2016v3
+ ( INFO  )  SCycleConfig       : ===========================================================
+ ( INFO  )  SCycleConfig       :                     Cycle configuration
+ ( INFO  )  SCycleConfig       :   - Running mode: LOCAL
+ ( INFO  )  SCycleConfig       :   - Target luminosity: 137390
+ ( INFO  )  SCycleConfig       :   - Output directory: /nfs/dust/cms/user/karavdia/ZprimeSemiLeptonic/102X_v1/Analysis/RunII_all_ttbarRecoCheck_moreBins/muon///workdir_Zprime_Analysis_RunII_ttbarCheck/
+ ( INFO  )  SCycleConfig       :   - Post-fix: _46
+ ( INFO  )  SInputData         :  ---------------------------------------------------------
+ ( INFO  )  SInputData         :  Type               : MC
+ ( INFO  )  SInputData         :  Version            : TT_TuneCUETP8M2T4_2016v3
+ ( INFO  )  SInputData         :  Total luminosity   : 92260.2pb-1
+ ( INFO  )  SInputData         :  NEventsMax         : -1
+ ( INFO  )  SInputData         :  NEventsSkip        : 0
+ ( INFO  )  SInputData         :  Cacheable          : No
+ ( INFO  )  SInputData         :  Skip validation    : No
+ ( INFO  )  SInputData         :  Skip file lookup   : No
+ ( INFO  )  SInputData         :  Input File         : '/nfs/dust/cms/user/karavdia/ZprimeSemiLeptonic/102X_v1/Preselection/RunII_all_ttbarRecoCheck///workdir_Zprime_PreSelec_2018_2/uhh2.AnalysisModuleRunner.MC.TT_TuneCUETP8M2T4_2016v3_75.root' (file) | '0' (lumi)
+ ( INFO  )  SInputData         :  Input File         : '/nfs/dust/cms/user/karavdia/ZprimeSemiLeptonic/102X_v1/Preselection/RunII_all_ttbarRecoCheck///workdir_Zprime_PreSelec_2018_2/uhh2.AnalysisModuleRunner.MC.TT_TuneCUETP8M2T4_2016v3_76.root' (file) | '0' (lumi)
+ ( INFO  )  SInputData         :  Input File         : '/nfs/dust/cms/user/karavdia/ZprimeSemiLeptonic/102X_v1/Preselection/RunII_all_ttbarRecoCheck///workdir_Zprime_PreSelec_2018_2/uhh2.AnalysisModuleRunner.MC.TT_TuneCUETP8M2T4_2016v3_77.root' (file) | '0' (lumi)
+ ( INFO  )  SInputData         :  Input File         : '/nfs/dust/cms/user/karavdia/ZprimeSemiLeptonic/102X_v1/Preselection/RunII_all_ttbarRecoCheck///workdir_Zprime_PreSelec_2018_2/uhh2.AnalysisModuleRunner.MC.TT_TuneCUETP8M2T4_2016v3_78.root' (file) | '0' (lumi)
+ ( INFO  )  SInputData         :  Input File         : '/nfs/dust/cms/user/karavdia/ZprimeSemiLeptonic/102X_v1/Preselection/RunII_all_ttbarRecoCheck///workdir_Zprime_PreSelec_2018_2/uhh2.AnalysisModuleRunner.MC.TT_TuneCUETP8M2T4_2016v3_79.root' (file) | '0' (lumi)
+ ( INFO  )  SInputData         :  Tree               : 'AnalysisTree' (name) | 'Flat input tree' (type)
+ ( INFO  )  SInputData         :  Tree               : 'AnalysisTree' (name) | 'Flat output tree' (type)
+ ( INFO  )  SInputData         :  ---------------------------------------------------------
+ ( INFO  )  SCycleConfig       : ===========================================================
+ ( INFO  )  SCycleController   : Job 'ZprimePreselectionJob' configured
+ ( INFO  )  SCycleController   : Time needed for initialisation:   0.26 s
+ ( INFO  )  SCycleController   : Entering ExecuteAllCycles()
+ ( INFO  )  SInputData         : Input type "MC" version "TT_TuneCUETP8M2T4_2016v3" : 100279 events
+ ( INFO  )  SCycleController   : Executing Cycle #0 ('uhh2::AnalysisModuleRunner') locally
+ ( INFO  )  SCycleController   : Processing input data type: MC version: TT_TuneCUETP8M2T4_2016v3
+ ( INFO  )  SCycleBaseExec     : Initialised InputData "MC" (Version:TT_TuneCUETP8M2T4_2016v3) on worker node
+ AnalysisModule = ZprimeAnalysisModule
+ ElectronCollection = slimmedElectronsUSER
+ GenJetCollection = slimmedGenJets
+ GenParticleCollection = GenParticles
+ GenTopJetCollection = genjetsAk8SubstructureSoftDrop
+ JetCollection = jetsAk4Puppi
+ METName = slimmedMETsPuppi
+ MuonCollection = slimmedMuonsUSER
+ PrimaryVertexCollection = offlineSlimmedPrimaryVertices
+ Sys_MuonID = nominal
+ Sys_MuonTrigger = nominal
+ Sys_PU = central
+ TopJetCollection = jetsAk8CHSSubstructure_SoftDropCHS
+ TopPuppiJetCollection = jetsAk8PuppiSubstructure_SoftDropPuppi
+ channel = muon
+ dataset_lumi = 9.226016399000000092e+04
+ dataset_type = MC
+ dataset_version = TT_TuneCUETP8M2T4_2016v3
+ genMETName = slimmedMETs_GenMET
+ is_looser_selection = false
+ is_puppi = true
+ jecsmear_direction = nominal
+ jersmear_direction = nominal
+ lumi_file = /nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/data/2016/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.root
+ lumihists_lumi_per_bin = 500.0
+ meta_jer_applied__jets = true
+ meta_jer_applied__topjets = true
+ meta_jer_applied__toppuppijets = true
+ n_events_total = 1.002790000000000000e+05
+ target_lumi = 1.373900000000000000e+05
+ use_sframe_weight = false
+ ( INFO  )  SCycleBaseExec     : Processing entry: 999 (999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 1999 (1999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 2999 (2999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 3999 (3999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 4999 (4999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 5999 (5999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 6999 (6999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 7999 (7999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 8999 (8999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 9999 (9999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 10999 (10999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 11999 (11999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 12999 (12999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 13999 (13999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 14999 (14999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 15999 (15999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 16999 (16999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 17999 (17999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 18999 (18999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 19999 (19999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 20999 (20999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 21999 (21999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 890 (22999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 1890 (23999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 2890 (24999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 3890 (25999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 4890 (26999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 5890 (27999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 6890 (28999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 7890 (29999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 8890 (30999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 9890 (31999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 10890 (32999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 11890 (33999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 12890 (34999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 13890 (35999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 14890 (36999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 15890 (37999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 16890 (38999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 17890 (39999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 18890 (40999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 828 (41999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 1828 (42999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 2828 (43999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 3828 (44999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 4828 (45999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 5828 (46999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 6828 (47999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 7828 (48999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 8828 (49999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 9828 (50999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 10828 (51999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 11828 (52999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 12828 (53999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 13828 (54999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 14828 (55999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 15828 (56999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 16828 (57999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 17828 (58999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 18828 (59999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 95 (60999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 1095 (61999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 2095 (62999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 3095 (63999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 4095 (64999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 5095 (65999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 6095 (66999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 7095 (67999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 8095 (68999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 9095 (69999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 10095 (70999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 11095 (71999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 12095 (72999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 13095 (73999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 14095 (74999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 15095 (75999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 16095 (76999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 17095 (77999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 18095 (78999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 19095 (79999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 676 (80999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 1676 (81999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 2676 (82999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 3676 (83999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 4676 (84999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 5676 (85999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 6676 (86999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 7676 (87999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 8676 (88999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 9676 (89999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 10676 (90999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 11676 (91999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 12676 (92999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 13676 (93999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 14676 (94999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 15676 (95999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 16676 (96999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 17676 (97999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 18676 (98999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Processing entry: 19676 (99999 / 100279 events processed so far)
+ ( INFO  )  SCycleBaseExec     : Terminated InputData "MC" (Version:TT_TuneCUETP8M2T4_2016v3) on worker node
+ ( INFO  )  SCycleController   : Writing output of "uhh2::AnalysisModuleRunner" to: /nfs/dust/cms/user/karavdia/ZprimeSemiLeptonic/102X_v1/Analysis/RunII_all_ttbarRecoCheck_moreBins/muon///workdir_Zprime_Analysis_RunII_ttbarCheck/uhh2.AnalysisModuleRunner.MC.TT_TuneCUETP8M2T4_2016v3_46.root
+ ( INFO  )  SCycleController   : Overall cycle statistics:
+ ( INFO  )  SCycleController   :     100279 Events - Real time  85.01 s  -  1180 Hz | CPU time  80.41 s  -  1247 Hz

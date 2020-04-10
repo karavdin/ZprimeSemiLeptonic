@@ -38,6 +38,13 @@
 #include <UHH2/common/include/TTbarReconstruction.h>
 #include <UHH2/common/include/ReconstructionHypothesisDiscriminators.h>
 
+//Read and apply Keras NN:
+// First include the class that does the computation
+//#include "lwtnn/LightweightGraph.hh"
+#include "lwtnn/LightweightNeuralNetwork.hh"
+// Then include the json parsing functions
+#include "lwtnn/parse_json.hh"
+
 using namespace std;
 using namespace uhh2;
 
@@ -56,6 +63,7 @@ public:
   virtual bool process(uhh2::Event&) override;
   void book_histograms(uhh2::Context&, vector<string>);
   void fill_histograms(uhh2::Event&, string);
+  void fill_NN_input(std::map<std::string, double>, uhh2::Event&);
 
 protected:
 
@@ -65,7 +73,7 @@ protected:
   std::unique_ptr<ElectronCleaner> electron_cleaner;
 
   // Scale Factors -- Systematics
-  unique_ptr<MCMuonScaleFactor> MuonID_module, MuonTrigger_module;
+  //  unique_ptr<MCMuonScaleFactor> MuonID_module, MuonTrigger_module;
 
   // AnalysisModules
   unique_ptr<AnalysisModule> LumiWeight_module, PUWeight_module, CSVWeight_module, printer_genparticles;
@@ -105,6 +113,9 @@ protected:
 
   bool is2016v2, is2016v3, is2017, is2018;
   bool isMuon, isElectron;
+
+  std::unique_ptr<lwt::LightweightNeuralNetwork> NeuralNetwork;
+  std::map<std::string, double> in_vals;//input for NN
 };
 
 void ZprimeAnalysisModule::book_histograms(uhh2::Context& ctx, vector<string> tags){
@@ -124,6 +135,14 @@ void ZprimeAnalysisModule::book_histograms(uhh2::Context& ctx, vector<string> ta
     mytag = tag+"_Generator";
     book_HFolder(mytag, new ZprimeSemiLeptonicGeneratorHists(ctx,mytag));
   }
+}
+
+//FixMe: fill proper filling of variables with preprocessing as in training
+void ZprimeAnalysisModule::fill_NN_input(std::map<std::string, double>in_vals, uhh2::Event& event){
+  in_vals["csv_jet1"] = -1;
+  in_vals["csv_jet2"] = -1;
+  in_vals["csv_jet3"] = -1;
+  in_vals["drmin_mu1_jet"] = -1;
 }
 
 void ZprimeAnalysisModule::fill_histograms(uhh2::Event& event, string tag){
@@ -168,7 +187,7 @@ ZprimeAnalysisModule::ZprimeAnalysisModule(uhh2::Context& ctx){
   is2016v3 = (ctx.get("dataset_version").find("2016v3") != std::string::npos);
   is2017 = (ctx.get("dataset_version").find("2017") != std::string::npos);
   is2018 = (ctx.get("dataset_version").find("2018") != std::string::npos);
-
+  if(debug) cout<<"is2016v2 is2016v3 is2017 is2018: "<<is2016v2<<" "<<is2016v3<<" "<<is2017<<" "<<is2018<<endl;
   // Important selection values
   islooserselection = (ctx.get("is_looser_selection") == "true");
   double muon_pt(55.);
@@ -235,17 +254,17 @@ ZprimeAnalysisModule::ZprimeAnalysisModule(uhh2::Context& ctx){
   muon_cleaner.reset(new MuonCleaner(muonID));
   electron_cleaner.reset(new ElectronCleaner(electronID));
   LumiWeight_module.reset(new MCLumiWeight(ctx));
-  PUWeight_module.reset(new MCPileupReweight(ctx, Sys_PU));
-  //  CSVWeight_module.reset(new MCCSVv2ShapeSystematic(ctx, "jets","central","iterativefit","","MCCSVv2ShapeSystematic"));
+  // PUWeight_module.reset(new MCPileupReweight(ctx, Sys_PU)); //FixME: temorary commented out
+  // //  CSVWeight_module.reset(new MCCSVv2ShapeSystematic(ctx, "jets","central","iterativefit","","MCCSVv2ShapeSystematic"));
 
-  if((is2016v3 || is2016v2) && isMuon){
-    MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/data/2016/MuonID_EfficienciesAndSF_average_RunBtoH.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta", 0., "MuonID", true, Sys_MuonID));
-    MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/data/2016/MuonTrigger_EfficienciesAndSF_average_RunBtoH.root", "IsoMu50_OR_IsoTkMu50_PtEtaBins", 0.5, "MuonTrigger", true, Sys_MuonTrigger));
-  }
-  // if(is2017 || is2018){
-  //   MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/karavdia/CMSSW_10_2_11/src/UHH2/common/data/2017/MuonID_94X_RunBCDEF_SF_ID.root", "NUM_HighPtID_DEN_genTracks_pair_newTuneP_probe_pt_abseta", 0., "HighPtID", true, Sys_MuonID));
-  //   MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/karavdia/CMSSW_10_2_11/src/UHH2/common/data/2017/MuonTrigger_EfficienciesAndSF_RunBtoF_Nov17Nov2017.root", "Mu50_PtEtaBins/pt_abseta_ratio", 0.5, "Trigger", true, Sys_MuonTrigger));
+  // if((is2016v3 || is2016v2) && isMuon){
+  //   MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/data/2016/MuonID_EfficienciesAndSF_average_RunBtoH.root", "MC_NUM_TightID_DEN_genTracks_PAR_pt_eta", 0., "MuonID", true, Sys_MuonID));
+  //   MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/karavdia/CMSSW_10_2_10/src/UHH2/common/data/2016/MuonTrigger_EfficienciesAndSF_average_RunBtoH.root", "IsoMu50_OR_IsoTkMu50_PtEtaBins", 0.5, "MuonTrigger", true, Sys_MuonTrigger));
   // }
+  // // if(is2017 || is2018){
+  // //   MuonID_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/karavdia/CMSSW_10_2_11/src/UHH2/common/data/2017/MuonID_94X_RunBCDEF_SF_ID.root", "NUM_HighPtID_DEN_genTracks_pair_newTuneP_probe_pt_abseta", 0., "HighPtID", true, Sys_MuonID));
+  // //   MuonTrigger_module.reset(new MCMuonScaleFactor(ctx, "/nfs/dust/cms/user/karavdia/CMSSW_10_2_11/src/UHH2/common/data/2017/MuonTrigger_EfficienciesAndSF_RunBtoF_Nov17Nov2017.root", "Mu50_PtEtaBins/pt_abseta_ratio", 0.5, "Trigger", true, Sys_MuonTrigger));
+  // // }
 
   // Selection modules
   Trigger1_selection.reset(new TriggerSelection(trigger1));
@@ -293,6 +312,8 @@ ZprimeAnalysisModule::ZprimeAnalysisModule(uhh2::Context& ctx){
   h_NPV = ctx.declare_event_output<int> ("NPV");
   h_weight = ctx.declare_event_output<float> ("weight");
 
+
+
   // btag 
   CSVBTag::wp btag_wp = CSVBTag::WP_TIGHT; // b-tag workingpoint
   JetId id_btag = CSVBTag(btag_wp);
@@ -312,6 +333,23 @@ ZprimeAnalysisModule::ZprimeAnalysisModule(uhh2::Context& ctx){
   // Book histograms
   vector<string> histogram_tags = {"Weights", "Muon1", "Trigger", "Muon2", "Electron1", "TwoDCut", "Jet1", "Jet2", "MET", "HTlep", "MatchableBeforeChi2Cut", "NotMatchableBeforeChi2Cut", "CorrectMatchBeforeChi2Cut", "NotCorrectMatchBeforeChi2Cut", "Chi2", "Matchable", "NotMatchable", "CorrectMatch", "NotCorrectMatch", "TopTagReconstruction", "NotTopTagReconstruction", "Btags2", "Btags1","TopJetBtagSubjet"};
   book_histograms(ctx, histogram_tags);
+
+
+  // //Set up Keras NN
+  // // get saved JSON file as an std::istream object
+  // std::ifstream in_file("/nfs/dust/cms/user/karavdia/lwtnn_TEST/CMSSW_10_2_11/src/UHH2/LwtnnExample/KerasDNNModel/neural_net.json");
+  // // build the network
+  // auto config = lwt::parse_json(in_file);
+  // NeuralNetwork.reset(new lwt::LightweightNeuralNetwork(config.inputs, config.layers, config.outputs));
+  // //  std::map<std::string, double> in_vals;
+  // const size_t total_inputs = config.inputs.size();
+  // for (size_t nnn = 0; nnn < total_inputs; nnn++) {
+  //   const auto& input = config.inputs.at(nnn);
+  //   cout<<"input.name: "<<input.name<<endl;
+  //   in_vals[input.name] = 0.9;
+  // }
+
+
 }
 
 /*
@@ -331,7 +369,7 @@ bool ZprimeAnalysisModule::process(uhh2::Event& event){
   event.set(h_is_zprime_reconstructed_correctmatch, false);
   event.set(h_chi2,-100);
   event.set(h_MET,-100);
-  event.set(h_Mttbar,-100);
+
   event.set(h_lep1_pt,-100);
   event.set(h_lep1_eta,-100);
   event.set(h_ak4jet1_pt,-100);
@@ -351,13 +389,13 @@ bool ZprimeAnalysisModule::process(uhh2::Event& event){
   LumiWeight_module->process(event);
   if(debug)  cout<<"LumiWeight ok"<<endl;
   // in fisrt round re-weighting is switched off
-  PUWeight_module->process(event);
-  if(debug)  cout<<"PUWeight ok"<<endl;
+  // PUWeight_module->process(event);  //FixME: temorary commented out
+  // if(debug)  cout<<"PUWeight ok"<<endl;
   // CSVWeight_module->process(event);
-  if(isMuon){
-    MuonID_module->process(event);
-    if(debug)  cout<<"MuonID ok"<<endl;
-  }
+  // if(isMuon){
+  //   MuonID_module->process(event);
+  //   if(debug)  cout<<"MuonID ok"<<endl;
+  // }
   // Run top-tagging
   TopTaggerPuppi->process(event);
   if(debug) cout<<"Top Tagger ok"<<endl;
@@ -373,8 +411,8 @@ bool ZprimeAnalysisModule::process(uhh2::Event& event){
   if(isMuon){
     if(!NMuon1_selection->passes(event)) return false;
     fill_histograms(event, "Muon1");
-    MuonTrigger_module->process_onemuon(event, 0);
-    fill_histograms(event, "Trigger");
+    // MuonTrigger_module->process_onemuon(event, 0);
+    // fill_histograms(event, "Trigger");
     if(!NMuon2_selection->passes(event)) return false;
     fill_histograms(event, "Muon2");
   }
@@ -470,6 +508,9 @@ bool ZprimeAnalysisModule::process(uhh2::Event& event){
     event.set(h_chi2,BestZprimeCandidate->discriminator("chi2_total"));
     event.set(h_Mttbar,BestZprimeCandidate->Zprime_v4().M());
   }
+
+  
+
   if(debug) cout<<"Set ttbar reconstruction vars for monitoring"<<endl;
 
   event.set(h_weight,event.weight);
@@ -492,6 +533,16 @@ bool ZprimeAnalysisModule::process(uhh2::Event& event){
   }
   event.set(h_NPV,event.pvs->size());
   if(debug) cout<<"Set some vars for monitoring"<<endl;
+
+
+  // //fill input vars for NN
+  // fill_NN_input(in_vals,event);
+  // auto out_vals = NeuralNetwork->compute(in_vals);
+  // cout<<"out_vals: "<<out_vals.size()<<endl;
+  // for (const auto& out: out_vals) {
+  //   std::cout << out.first << " " << out.second<< std::endl;
+  // }
+
   return true;
 }
 
